@@ -119,13 +119,13 @@
   <main class="card__wrapper">
     <div class="card__top">
       {#if prefetch}
-        {#each imgs as img (img)}
+        {#each imgs as img, i (img)}
           <img
             on:click={ProductClickEvent}
             class="card__image"
             src={resizingImg(img)}
             style="display: {imgs.indexOf(img) == index ? 'block' : 'none'}"
-            alt="dsdad"
+            alt={product.nombre + '-image-' + (i + 1)}
           />
         {/each}
       {:else}
@@ -133,7 +133,7 @@
           on:click={ProductClickEvent}
           class="card__image"
           src={resizingImg(current)}
-          alt="dsdad"
+          alt={product.nombre + '-image-1'}
         />
       {/if}
       <button
@@ -239,6 +239,12 @@
     justify-content: space-between;
     position: relative;
     overflow: hidden;
+    /* background: url('../imgs/img-test.png'); */
+    background: url('../imgs/consweet-logo-letter.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 20%;
+    background-color: var(--primary-opacity-2);
   }
   .card__image {
     object-fit: cover;

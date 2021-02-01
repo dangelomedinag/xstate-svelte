@@ -83,24 +83,40 @@
     height: 342px;
     max-height: 342px;
     overflow: hidden;
+    /* padding-right: 5em; */
   }
   .salient::after {
     content: '';
     position: absolute;
     top: 0;
     right: 0;
-    height: 100%;
+    height: 98%;
     width: 80%;
-    background: linear-gradient(90deg, #2a221d00 30%, #2a221d 100%);
+    background: linear-gradient(
+      90deg,
+      var(--secondary-trans, #2a221d00) 30%,
+      var(--secondary, #2a221d) 100%
+    );
     pointer-events: none;
   }
   .salient__scrollable {
     overflow-y: hidden;
-    overflow-x: scroll;
+    overflow-x: auto;
     white-space: nowrap;
     min-width: 100%;
-    padding: 1em 5em 1em 0;
+    padding-top: 1em;
+    padding-right: 0;
+    /* padding-right: 0px; */
+    padding-bottom: 1em;
+    padding-left: 0px;
     scroll-behavior: smooth;
+    /* color: lightcoral red; */
+    scrollbar-color: var(--primary) transparent;
+  }
+  .salient__scrollable::after {
+    content: '';
+    display: inline-block;
+    width: 3em;
   }
   .salient__scrollable::-webkit-scrollbar {
     width: 100%;
@@ -141,11 +157,13 @@
     color: #000;
     transform: translate(0%, -50%);
     margin: 0;
+    margin-right: 0.5em;
     border-radius: 100px;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
+    border: 0;
   }
   .salient__btn:hover,
   .salient__btn:focus {

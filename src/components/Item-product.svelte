@@ -68,22 +68,22 @@
     </div>
     <div class="col">
       <div class="list-images-wrapper">
-        {#each product.imgs as img (img)}
+        {#each product.imgs as img, i (img)}
           <div
             class:active={product.imgs.indexOf(img) ==
               product.imgs.indexOf(current)}
             class="image-wrapper"
           >
             <img
-              class="thumblr"
+              class="thumbnail"
               src={resizingTumblr(img)}
-              alt="product-thumbrl-preview"
+              alt="thumbnail current product {product.name}-{i}"
               on:mouseover={setCurrentImg(product.imgs.indexOf(img))}
             />
           </div>
         {/each}
       </div>
-      {#each product.imgs as img (img)}
+      {#each product.imgs as img, i (img)}
         <img
           class="img-full"
           style="display: {product.imgs.indexOf(img) ==
@@ -91,7 +91,7 @@
             ? 'block'
             : 'none'}"
           src={resizingImg(img)}
-          alt="xx"
+          alt="current product {product.name}-{i}"
         />
       {/each}
     </div>
@@ -304,7 +304,7 @@
     /* margin: 5px 0; */
   }
 
-  .thumblr {
+  .thumbnail {
     flex: 1 0 80px;
     height: 100%;
     cursor: pointer;

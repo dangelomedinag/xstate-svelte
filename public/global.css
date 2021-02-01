@@ -2,6 +2,7 @@
 
 :root {
   --primary: #f36566;
+  --primary-trans: #f3656500;
   --primary-opacity-1: rgba(243, 101, 102, 0.1);
   --primary-opacity-2: rgba(243, 101, 102, 0.2);
   --primary-opacity-3: rgba(243, 101, 102, 0.3);
@@ -12,6 +13,7 @@
   --primary-opacity-8: rgba(243, 101, 102, 0.8);
   --primary-opacity-9: rgba(243, 101, 102, 0.9);
   --secondary: #2a221d;
+  --secondary-trans: #2a221d00;
   --secondary-opacity-1: rgba(42, 34, 29, 0.1);
   --secondary-opacity-2: rgba(42, 34, 29, 0.2);
   --secondary-opacity-3: rgba(42, 34, 29, 0.3);
@@ -76,6 +78,6 @@ a:visited {
 svg {
   width: 1em;
   height: 1em;
-  fill: #d8d8d8;
+  fill: var(--neutral, #d8d8d8);
   /* fill: "current"; */
 }

@@ -29,11 +29,7 @@
       opacity: 0,
     },
     outro = { duration: 600, easing: quintIn, x: -400, opacity: 0 };
-
-  // console.log(products);
-  // console.log(categories);
-  // console.log(product);
-
+  $: product = {};
   $: toolProductsSort = state.context.products
     .filter((item) =>
       filter === 'todos' ? item.nombre : item.categoria_id === filter
@@ -64,6 +60,7 @@
   function cardClickHandler(e) {
     // console.log(e.detail.product);
     product = e.detail.product;
+    selectProduct = product;
     send('STAGE_PRODUCT');
   }
   function filterWithTags(id) {
@@ -152,7 +149,9 @@
   </Section>
 </StageOne>
 
-<nav style="display: flex; justify-content: center; align-items: center">
+<nav
+  style="padding-top: 1em; display: flex; justify-content: center; align-items: center"
+>
   {#if state.value === 'listing'}
     <button on:click={() => send('RETURN')}>{'<'} inicio</button>
     {#key filter}
@@ -205,17 +204,13 @@
 </StageTwo>
 
 <StageThree {state}>
-  <!-- <h1>product</h1> -->
-  <!-- <button on:click={() => send('STAGE_ROOT')}>volver inico</button> -->
-  {#key product}
-    <ItemProduct {product} {intro} {outro}>
-      <ContactMethods />
-    </ItemProduct>
-  {/key}
+  <!-- {#key product} -->
+  <ItemProduct {product} {intro} {outro}>
+    <ContactMethods />
+  </ItemProduct>
+  <!-- {/key} -->
 </StageThree>
-<!-- {/if} -->
 
-<!-- <h1>sdasdada</h1> -->
 <style>
   .grid-products {
     margin: 0 auto;
