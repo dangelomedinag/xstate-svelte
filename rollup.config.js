@@ -5,7 +5,6 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import replace from "@rollup/plugin-replace";
-import sveltePreprocess from 'svelte-preprocess'
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -43,33 +42,10 @@ export default {
 			compilerOptions: {
 				// enable run-time checks when not in production
 				dev: !production
-			},
-			preprocess: sveltePreprocess({
-        postcss: {
-					plugins: 
-					[ 
-						require("autoprefixer")(), 
-						// require('cssnano')({preset: 'default'})
-					]
-				},
-				babel: {
-					presets: [
-						[
-							'@babel/preset-env',
-							{
-								loose: true,
-								// No need for babel to resolve modules
-								modules: false,
-								targets: {
-									// Very important. Target es6+
-									esmodules: true,
-								},
-							},
-						],
-					],
-				}
-      })
-			
+			}
+		}),
+		replace({ 
+			'process.env.NODE_ENV': process.env.NODE_ENV
 		}),
 		// we'll extract any component CSS out into
 		// a separate file - better for performance
@@ -83,10 +59,6 @@ export default {
 		resolve({
 			browser: true,
 			dedupe: ['svelte']
-		}),
-
-		replace({ 
-			'process.env.NODE_ENV': process.env.NODE_ENV
 		}),
 		commonjs(),
 

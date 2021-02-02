@@ -6,19 +6,20 @@ export function useMachine(machine, options) {
 
   const store = readable(machine.initialState, set => {
     service.onTransition(state => {
-      if (state.changed) {
+      console.log(state.value)
+      if(state.changed) {
         set(state);
       }
     });
     service.start();
 
-    return () => {
+    return ()=>{
       service.stop();
     };
   });
 
   return {
-    xstate: store,
+    state: store,
     send: service.send
-  };
+  }
 }

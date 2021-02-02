@@ -1,96 +1,35 @@
-import { createMachine, assign } from "xstate";
-import categoriesBackup from "../../categories.js";
-import productsBackup from "../../products.js";
+import { Machine, assign } from "xstate";
 
-
-
-const stagesManchine = createMachine({
-  id: "stages",
-  initial: "root",
-  context: {
-    products: [],
-    categories: []
-  },
+const stepsMachine = Machine({
+  id: "steps",
+  initial: "idle",
   states: {
-    root: {
-      invoke: [
-        {
-          id:"getProductsFromAPI",
-          src: getProductsInfo,
-          onDone: {
-            actions: ["storeProducts"],
-          },
-          onError: {
-            actions: "forwardProducts"
-          },
-        },
-        {
-          id:"getCategoriesFromAPI",
-          src: getCategoriesInfo,
-          onDone: {
-            actions: ["storeCategories"],
-          },
-          onError: {
-            actions: "forwardCategories"
-          },
+    idle: {
+      on: {
+        MOUNT: {
+          target: "init",
         }
-      ],
-      on: {
-        STAGE_LISTING: {
-          target: "listing",
-          cond: notEmptyData
-        },
-        STAGE_PRODUCT: {
-          target: "product",
-          cond: notEmptyData
-        },
       }
     },
-    listing: {
+    init: {
       on: {
-        RETURN: "root",
-        STAGE_PRODUCT: "product"
+        MID: "middle",
+        FINAL: "final",
       }
     },
-    product: {
+    middle: {
       on: {
-        RETURN: "listing",
-        STAGE_ROOT: "root"
+        INIT: "init",
+        FINAL: "final",
       }
-    }
-  }
-},{
-  actions: {
-    storeProducts: assign({
-      products: ( _ , {data})=> data
-    }),
-    storeCategories: assign({
-      categories: ( _ , {data})=> data
-    }),
-    forwardProducts: assign({
-      products: ( _ , event) => productsBackup
-    }),
-    forwardCategories: assign({
-      categories: ( _ , event) => categoriesBackup
-    }),
+    },
+    final: {
+      on: {
+        INIT: "init",
+        MID: "middle",
+      }
+    },
   }
 })
 
-
-function getProductsInfo({products}) {
-  if (products.length != 0) return;
-  return fetch('https://api-consweet.vercel.app/api/products1').then((response) =>
-    response.json()
-  );
-}
-function getCategoriesInfo({categories}) {
-  if (categories.length != 0) return;
-  return fetch('https://api-consweet.vercel.app/api/categories1').then((response) =>
-    response.json()
-  );
-}
-
-function notEmptyData({products, categories}){return products.length != 0 && categories.length !=0}
-// function notEmptyCategories({categories}){return categories.length != 0}
-
-export default stagesManchine
+export default stepsMachine;
