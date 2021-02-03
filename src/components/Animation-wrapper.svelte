@@ -47,6 +47,7 @@
 	on:introstart={stateAnimations}
 	on:outrostart={stateAnimations}
 	on:introend={stateAnimations}
-	on:outroend={stateAnimations}>
+	on:outroend={stateAnimations}
+>
 	<slot />
 </div>

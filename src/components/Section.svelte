@@ -86,8 +86,8 @@
 	<slot />
 </section>
 <hr class="split" />
-<!-- </AnimationWrapper> -->
 
+<!-- </AnimationWrapper> -->
 <style>
 	.section-main {
 		padding: 0.5em 0.5em;

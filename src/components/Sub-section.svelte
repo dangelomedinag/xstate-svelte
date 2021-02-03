@@ -14,6 +14,12 @@
 	//? Logic
 </script>
 
+<AnimationWrapper>
+	<div class="wrapper">
+		<slot />
+	</div>
+</AnimationWrapper>
+
 <style>
 	.wrapper {
 		position: relative;
@@ -46,9 +52,3 @@
 	@media (min-width: 1280px) {
 	}
 </style>
-
-<AnimationWrapper>
-	<div class="wrapper">
-		<slot />
-	</div>
-</AnimationWrapper>

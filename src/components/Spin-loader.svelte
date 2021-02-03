@@ -1,3 +1,10 @@
+<div class="spin-loader">
+	<div />
+	<div />
+	<div />
+	<div />
+</div>
+
 <style>
 	.spin-loader {
 		display: inline-block;
@@ -55,10 +62,3 @@
 		}
 	}
 </style>
-
-<div class="spin-loader">
-	<div />
-	<div />
-	<div />
-	<div />
-</div>
