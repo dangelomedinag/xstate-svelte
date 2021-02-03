@@ -311,7 +311,8 @@
 	</div>
 </div>
 
-<style>
+<style lang="scss">
+	$color: red;
 	.grid-products {
 		margin: 0 auto;
 		display: flex;
@@ -319,6 +320,7 @@
 		align-items: center;
 		flex-wrap: wrap;
 		width: 100%;
+		background-color: $color;
 	}
 	/* .grid-products { */
 	/* padding: 1em; */
