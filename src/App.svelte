@@ -26,6 +26,9 @@
 		filter = "todos",
 		sort = "menor";
 
+	$: empty = !!products.length;
+	$: console.log(empty);
+
 	function FETCH(callback) {
 		const FETCH_products = fetch("https://api-consweet.vercel.app/api/products")
 			.then((res) => {
