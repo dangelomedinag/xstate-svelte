@@ -65,7 +65,7 @@
 		</div>
 		<div class="col">
 			<div class="list-images-wrapper">
-				{#each product.imgs as img, i (img)}
+				{#each product.imgs as img (img)}
 					<div
 						class:active={product.imgs.indexOf(img) ==
 							product.imgs.indexOf(current)}
@@ -74,13 +74,13 @@
 						<img
 							class="thumbnail"
 							src={resizingTumblr(img)}
-							alt="thumbnail current product {product.name}-{i}"
+							alt="thumbnail current product {product.name}"
 							on:mouseover={setCurrentImg(product.imgs.indexOf(img))}
 						/>
 					</div>
 				{/each}
 			</div>
-			{#each product.imgs as img, i (img)}
+			{#each product.imgs as img (img)}
 				<img
 					class="img-full"
 					style="display: {product.imgs.indexOf(img) ==
@@ -88,7 +88,7 @@
 						? 'block'
 						: 'none'}"
 					src={resizingImg(img)}
-					alt="current product {product.name}-{i}"
+					alt="current product {product.name}"
 				/>
 			{/each}
 		</div>

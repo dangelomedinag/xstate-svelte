@@ -83,7 +83,6 @@
 		height: 342px;
 		max-height: 342px;
 		overflow: hidden;
-		/* padding-right: 5em; */
 	}
 	.salient::after {
 		content: "";
@@ -106,12 +105,10 @@
 		min-width: 100%;
 		padding-top: 1em;
 		padding-right: 0;
-		/* padding-right: 0px; */
 		padding-bottom: 1em;
 		padding-left: 0px;
 		scroll-behavior: smooth;
-		/* color: lightcoral red; */
-		scrollbar-color: var(--primary) transparent;
+		scrollbar-color: var(--primary, #f36262) transparent;
 	}
 	.salient__scrollable::after {
 		content: "";
@@ -124,18 +121,15 @@
 		background-color: white;
 		margin-top: 1em;
 	}
-	.salient__scrollable::-webkit-scrollbar {
-		height: 5px;
-	}
 	.salient__scrollable::-webkit-scrollbar-track {
 		background: #2a221d;
 	}
 	.salient__scrollable::-webkit-scrollbar-thumb {
 		border-radius: 10px;
-		background: #f36262;
+		background: var(--primary, #f36566);
 	}
 	.salient__scrollable::-webkit-scrollbar-thumb:hover {
-		background: #e98585;
+		background: var(--primary, #e98585);
 	}
 	.salient__spacer {
 		min-width: 15px;
@@ -152,7 +146,6 @@
 		top: 50%;
 		width: 3em;
 		height: 3em;
-		/* padding: 1em; */
 		background-color: white;
 		color: #000;
 		transform: translate(0%, -50%);
@@ -170,7 +163,6 @@
 		background-color: rgb(223, 223, 223);
 		box-shadow: 0px 0px 0px 6px var(--primary-opacity-3);
 	}
-
 	.salient__icon {
 		fill: var(--primary, #f36262);
 		width: 50%;

@@ -125,7 +125,7 @@
 						class="card__image"
 						src={resizingImg(img)}
 						style="display: {imgs.indexOf(img) == index ? 'block' : 'none'}"
-						alt="dsdad"
+						alt={product.nombre + " item of products"}
 					/>
 				{/each}
 			{:else}
@@ -133,7 +133,7 @@
 					on:click={ProductClickEvent}
 					class="card__image"
 					src={resizingImg(current)}
-					alt="dsdad"
+					alt={product.nombre + " item product"}
 				/>
 			{/if}
 			<button
@@ -239,6 +239,12 @@
 		justify-content: space-between;
 		position: relative;
 		overflow: hidden;
+		/* guards if failed load imgs */
+		background: url("../imgs/consweet-logo-letter.svg");
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: 20%;
+		background-color: var(--primary-opacity-2);
 	}
 	.card__image {
 		object-fit: cover;

@@ -21,39 +21,37 @@
 		currproduct,
 		selectProduct;
 	let filteredProducts,
-		filterCatSort = [],
-		salienteProducts = [],
+		sortCategoriesPrice = [],
+		filterProductsSalient = [],
 		filter = "todos",
 		sort = "menor";
 
 	$: empty = !!products.length;
+	$: emptys = !!products.length && !!categories.length;
 	$: console.log(empty);
 
 	function FETCH(callback) {
-		const FETCH_products = fetch("https://api-consweet.vercel.app/api/products")
-			.then((res) => {
-				if (res.status > 299) throw new Error("bad status code for response");
-				res.json().then((data) => (products = data));
-			})
-			.catch((err) => {
-				console.error(err);
-				products = productsBack;
-			});
+		function failure(res, i) {
+			if (!res.ok) {
+				!!i ? (categories = categoriesBack) : (products = productsBack);
+				throw new Error("bad status code for response");
+			}
+			return res
+				.json()
+				.then((data) => (!!i ? (categories = data) : (products = data)));
+		}
 
-		const FETCH_categories = fetch(
-			"https://api-consweet.vercel.app/api/categories"
-		)
-			.then((res) => {
-				if (res.status > 299) throw new Error("bad status code for response");
-				res.json().then((data) => (categories = data));
-			})
-			.catch((err) => {
-				console.error(err);
-				categories = categoriesBack;
-			});
+		["products", "categories"].forEach((entity, i) => {
+			fetch("https://api-consweet.vercel.app/api/" + entity)
+				.then((res) => {
+					failure(res, i);
+				})
+				.catch((err) => console.error(err));
+		});
 
 		if (callback) callback();
 	}
+
 	function showProduct(e) {
 		currproduct = e.detail.product;
 		send("FINAL");
@@ -66,64 +64,33 @@
 	});
 
 	$: if (products.length > 0) {
-		filteredProducts = products
-			.filter((item) =>
-				filter === "todos" ? item.nombre : item.categoria_id === filter
-			)
-			.sort(function (a, b) {
-				if (sort === "mayor") {
-					if (a.precio < b.precio) {
-						return 1;
-					} else {
-						return -1;
-					}
-				} else {
-					if (a.precio > b.precio) {
-						return 1;
-					} else {
-						return -1;
-					}
-				}
-			});
-
-		salienteProducts = products.filter((item) => item.salient);
+		filterProductsSalient = products.filter((item) => item.salient);
 	}
-	function filterWithTags(id) {
+
+	$: if (emptys) {
+		sortCategoriesPrice = categories
+			.sort((a, b) => {
+				function price({ id }) {
+					return products[products.findIndex((el) => el.categoria_id === id)]
+						.precio;
+				}
+
+				return sort === "mayor"
+					? price(a) < price(b)
+						? 1
+						: -1
+					: price(a) > price(b)
+					? 1
+					: -1;
+			})
+			.filter((item) =>
+				filter === "todos" ? item.nombre : item.id === filter
+			);
+	}
+
+	function tagsHandler(id) {
 		filter = id;
 		send("MID");
-	}
-
-	$: if (categories.length > 0 && products.length > 0) {
-		filterCatSort = categories.sort((a, b) => {
-			const aID = a.id;
-			const elementA = products.find((it) => it.categoria_id === aID);
-			const bID = b.id;
-			const elementB = products.find((it) => it.categoria_id === bID);
-			// console.log(elementA.precio);
-
-			if (sort === "mayor") {
-				if (elementA.precio < elementB.precio) {
-					return 1;
-				} else {
-					return -1;
-				}
-			} else {
-				if (elementA.precio > elementB.precio) {
-					return 1;
-				} else {
-					return -1;
-				}
-			}
-		});
-
-		// const testFilter2 = categories.forEach((a) => {
-		//   console.log(a);
-		//   const aID = a.id;
-		// const elementA = products.find((it) => it.categoria_id === aID);
-		// console.log(elementA.precio);
-		// });
-
-		// console.log(testFilter);
 	}
 </script>
 
@@ -131,21 +98,13 @@
 	<div class="container">
 		{#if $state.matches("init")}
 			<StageTransitioner>
-				<!-- <button
-      on:click={() => {
-        currproduct = undefined;
-        send('MID');
-      }}
-      disabled={$state.value === 'middle' || products.length < 1}>middle</button
-    > -->
-
 				<Section id="section-products">
 					<ScrollWrapper
-						products={salienteProducts}
+						products={filterProductsSalient}
 						on:clickCard={showProduct}
 					/>
 					{#each categories as { nombre: name, id } (id)}
-						<SectionButton on:click={filterWithTags(id)}>
+						<SectionButton on:click={tagsHandler(id)}>
 							{name}
 						</SectionButton>
 					{/each}
@@ -252,18 +211,27 @@
   > -->
 			<StageTransitioner>
 				<div
-					style="position: sticky; top: 0; z-index: 999999999; background-color: var(--secondary);width: 100%; border-bottom: 1px solid var(--neutral-opacity-1);"
+					style="position: sticky; top: 0; z-index: 999999999; background-color: var(--secondary);width: 100%;"
 				>
 					<ProductsSortTool {categories} bind:filter bind:sort />
 				</div>
-				{#each filterCatSort.filter((item) =>
-					filter === "todos" ? item.nombre : item.id === filter
-				) as { id, nombre: name }}
-					<div class="grid-products">
+				{#each sortCategoriesPrice as { id, nombre: name }, i (id)}
+					<div
+						class:lastCat={i == sortCategoriesPrice.length - 1}
+						class="grid-products"
+						id={"categorie-list" + i}
+					>
 						<h3
-							style="margin:0;padding: 0.5em 0;text-align: center;position: sticky; top: 66px; z-index: 99999999; background-color: var(--secondary);width: 100%; border-bottom: 1px solid var(--neutral-opacity-1);"
+							style="margin:0 0 3em 0;padding: 0.5em;text-align: center;position: sticky; top: 66px; z-index: 99999999; background-color: var(--secondary);width: 100%; border-bottom: 1px solid var(--neutral-opacity-1);"
 						>
 							{name}
+							<a
+								style="font-size: .75em; text-align: right"
+								href="#categorie-list{i !== sortCategoriesPrice.length - 1
+									? i + 1
+									: 0}"
+								>{i !== sortCategoriesPrice.length - 1 ? "sig." : "volver"}</a
+							>
 						</h3>
 						{#each products.filter((it) => it.categoria_id === id) as item (item.id)}
 							<div
@@ -288,24 +256,12 @@
 		{/if}
 
 		{#if $state.matches("final")}
-			<!-- <button
-    on:click={() => {
-      send('INIT');
-      currproduct = undefined;
-    }}
-    disabled={$state.value === 'init'}>init</button
-  >
-  <button
-    on:click={() => {
-      send('MID');
-      currproduct = undefined;
-    }}
-    disabled={$state.value === 'middle' || products.length < 1}>middle</button
-  > -->
 			<StageTransitioner>
-				<ItemProduct product={currproduct}>
-					<ContactMethods />
-				</ItemProduct>
+				{#key currproduct}
+					<ItemProduct product={currproduct}>
+						<ContactMethods />
+					</ItemProduct>
+				{/key}
 			</StageTransitioner>
 		{/if}
 	</div>
@@ -314,14 +270,21 @@
 <style lang="scss">
 	$color: red;
 	.grid-products {
-		margin: 0 auto;
+		// margin: 0 auto;
+		// margin-top: 3.5em;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		flex-wrap: wrap;
 		width: 100%;
-		background-color: $color;
+		// background-color: $color;
 	}
+
+	.grid-products.lastCat {
+		// background-color: greenyellow;
+		padding-bottom: 50vh;
+	}
+
 	/* .grid-products { */
 	/* padding: 1em; */
 	/* display: flex;
