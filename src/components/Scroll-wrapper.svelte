@@ -1,6 +1,5 @@
 <script>
-	import { onMount } from "svelte";
-	import { quintInOut, linear, quintOut, quintIn } from "svelte/easing";
+	import { quintOut } from "svelte/easing";
 	import { scale } from "svelte/transition";
 	import CardProductSkeleton from "./Card-product-skeleton.svelte";
 	import CardProduct from "./Card-product.svelte";
@@ -43,7 +42,7 @@
 	}
 </script>
 
-<div class="salient">
+<section class="salient">
 	<div class="salient__scrollable">
 		{#each products as item (item.id)}
 			<CardProduct product={item} on:clickCard />
@@ -74,7 +73,7 @@
 			<CardProductSkeleton />
 		{/each}
 	</div>
-</div>
+</section>
 
 <style>
 	.salient {
@@ -82,6 +81,7 @@
 		margin: 1em 0;
 		height: 342px;
 		max-height: 342px;
+		width: 100%;
 		overflow: hidden;
 	}
 	.salient::after {
@@ -98,7 +98,7 @@
 		);
 		pointer-events: none;
 	}
-	.salient__scrollable {
+	/* .salient__scrollable {
 		overflow-y: hidden;
 		overflow-x: auto;
 		white-space: nowrap;
@@ -114,7 +114,18 @@
 		content: "";
 		display: inline-block;
 		width: 3em;
+	} */
+
+	.salient__scrollable {
+		overflow-y: hidden;
+		overflow-x: auto;
+		max-height: 100%;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		flex: 1 1 100%;
 	}
+
 	.salient__scrollable::-webkit-scrollbar {
 		width: 100%;
 		height: 5px;
@@ -143,14 +154,14 @@
 		position: absolute;
 		z-index: 100;
 		right: 0;
-		top: 50%;
+		top: 10%;
 		width: 3em;
 		height: 3em;
 		background-color: white;
 		color: #000;
 		transform: translate(0%, -50%);
 		margin: 0;
-		margin-right: 0.5em;
+		margin-right: 1em;
 		border-radius: 100px;
 		cursor: pointer;
 		display: flex;
