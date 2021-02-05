@@ -126,7 +126,7 @@
 	}
 	.salient__scrollable::-webkit-scrollbar-thumb {
 		border-radius: 10px;
-		background: var(--primary-opacity-1, #f36566);
+		background: var(--primary-opacity-1, #f362621a);
 	}
 	.salient__scrollable::-webkit-scrollbar-thumb:hover {
 		background: var(--primary, #e98585);
