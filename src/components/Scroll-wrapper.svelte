@@ -79,8 +79,7 @@
 	.salient {
 		position: relative;
 		margin: 1em 0;
-		height: 342px;
-		max-height: 342px;
+		height: 353px;
 		width: 100%;
 		overflow: hidden;
 	}
@@ -89,55 +88,45 @@
 		position: absolute;
 		top: 0;
 		right: 0;
-		height: 98%;
+		height: 95%;
 		width: 80%;
+		opacity: 0;
 		background: linear-gradient(
 			90deg,
 			var(--secondary-trans, #2a221d00) 30%,
 			var(--secondary, #2a221d) 100%
 		);
 		pointer-events: none;
+		transition: opacity 1s;
 	}
-	/* .salient__scrollable {
-		overflow-y: hidden;
-		overflow-x: auto;
+	.salient:hover::after {
+		opacity: 1;
+	}
+	.salient__scrollable {
+		overflow-x: scroll;
 		white-space: nowrap;
 		min-width: 100%;
+		/* padding: 1em 5em 1em 0; */
 		padding-top: 1em;
-		padding-right: 0;
+		padding-right: 5em;
 		padding-bottom: 1em;
 		padding-left: 0px;
 		scroll-behavior: smooth;
 		scrollbar-color: var(--primary, #f36262) transparent;
-	}
-	.salient__scrollable::after {
-		content: "";
-		display: inline-block;
-		width: 3em;
-	} */
-
-	.salient__scrollable {
-		overflow-y: hidden;
-		overflow-x: auto;
-		max-height: 100%;
-		display: flex;
-		flex-direction: row;
-		flex-wrap: nowrap;
-		flex: 1 1 100%;
+		scrollbar-width: thin;
 	}
 
 	.salient__scrollable::-webkit-scrollbar {
-		width: 100%;
 		height: 5px;
-		background-color: white;
-		margin-top: 1em;
+		border-radius: 10px;
+		overflow: hidden;
 	}
 	.salient__scrollable::-webkit-scrollbar-track {
-		background: #2a221d;
+		margin: 0 14px;
 	}
 	.salient__scrollable::-webkit-scrollbar-thumb {
 		border-radius: 10px;
-		background: var(--primary, #f36566);
+		background: var(--primary-opacity-1, #f36566);
 	}
 	.salient__scrollable::-webkit-scrollbar-thumb:hover {
 		background: var(--primary, #e98585);
@@ -149,17 +138,20 @@
 		display: inline-block;
 		max-height: 100%;
 	}
+
 	.salient__btn {
+		/* transform: translateX(20%); */
+		opacity: 0;
 		outline: none;
 		position: absolute;
 		z-index: 100;
 		right: 0;
-		top: 10%;
+		top: 50%;
 		width: 3em;
 		height: 3em;
 		background-color: white;
 		color: #000;
-		transform: translate(0%, -50%);
+		transform: translate(150%, -50%);
 		margin: 0;
 		margin-right: 1em;
 		border-radius: 100px;
@@ -168,12 +160,18 @@
 		justify-content: center;
 		align-items: center;
 		border: 0;
+		transition: opacity 0.6s, transform 0.6s;
 	}
 	.salient__btn:hover,
 	.salient__btn:focus {
 		background-color: rgb(223, 223, 223);
 		box-shadow: 0px 0px 0px 6px var(--primary-opacity-3);
 	}
+	.salient__scrollable:hover .salient__btn {
+		transform: translate(0%, -50%);
+		opacity: 1;
+	}
+
 	.salient__icon {
 		fill: var(--primary, #f36262);
 		width: 50%;
@@ -184,6 +182,9 @@
 	}
 
 	@media (min-width: 768px) {
+		.salient::after {
+			opacity: 1;
+		}
 	}
 
 	@media (min-width: 1024px) {

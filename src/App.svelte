@@ -54,6 +54,7 @@
 
 	function showProduct(e) {
 		currproduct = e.detail.product;
+		scrollTop();
 		send("FINAL");
 	}
 
@@ -92,6 +93,9 @@
 		filter = id;
 		send("MID");
 	}
+	function scrollTop() {
+		window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+	}
 </script>
 
 <div class="container-full">
@@ -109,7 +113,14 @@
 						</SectionButton>
 					{/each}
 					<div>
-						<SectionButton main bouncy on:click={() => send("MID")}>
+						<SectionButton
+							main
+							bouncy
+							on:click={() => {
+								send("MID");
+								scrollTop();
+							}}
+						>
 							Mostrar todos
 						</SectionButton>
 					</div>
