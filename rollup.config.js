@@ -55,9 +55,9 @@ export default {
 				// enable run-time checks when not in production
 				dev: !production
 			},
-			preprocess: [
-				scss({}),
-			]
+			// preprocess: [
+			// 	scss({}),
+			// ]
 		}),
 		replace({ 
 			'process.env.NODE_ENV': process.env.NODE_ENV

@@ -15,6 +15,7 @@
 	import ItemProduct from "./components/Item-product.svelte";
 	import ContactMethods from "./components/Contact-methods.svelte";
 	import CardProduct from "./components/Card-product.svelte";
+	import FooterMain from "./components/Footer-main.svelte";
 
 	let products = [],
 		categories = [],
@@ -102,7 +103,7 @@
 	<div class="container">
 		{#if $state.matches("init")}
 			<StageTransitioner>
-				<Section id="section-products">
+				<Section id="section-salient">
 					<ScrollWrapper
 						products={filterProductsSalient}
 						on:clickCard={showProduct}
@@ -169,6 +170,7 @@
 		{/if}
 
 		<nav
+			id="toolbarTop"
 			style="padding-top: 1em; display: flex; justify-content: center; align-items: center"
 		>
 			{#if $state.matches("middle")}
@@ -213,13 +215,6 @@
 		</nav>
 
 		{#if $state.matches("middle")}
-			<!-- <button
-    on:click={() => {
-      currproduct = undefined;
-      send('INIT');
-    }}
-    disabled={$state.value === 'init'}>init</button
-  > -->
 			<StageTransitioner>
 				<div
 					style="position: sticky; top: 0; z-index: 999999999; background-color: var(--secondary);width: 100%;"
@@ -230,17 +225,17 @@
 					<div
 						class:lastCat={i == sortCategoriesPrice.length - 1}
 						class="grid-products"
-						id={"categorie-list" + i}
 					>
 						<h3
-							style="margin:0 0 3em 0;padding: 0.5em;text-align: center;position: sticky; top: 66px; z-index: 99999999; background-color: var(--secondary);width: 100%; border-bottom: 1px solid var(--neutral-opacity-1);"
+							id={"categorie-list" + i}
+							style="margin:0 0 1em 0;padding: 0.5em;text-align: center;position: sticky; top: 66px; z-index: 99999999; background-color: var(--secondary);width: 100%; border-bottom: 1px solid var(--neutral-opacity-1);"
 						>
 							{name}
 							<a
 								style="font-size: .75em; text-align: right"
-								href="#categorie-list{i !== sortCategoriesPrice.length - 1
-									? i + 1
-									: 0}"
+								href={i !== sortCategoriesPrice.length - 1
+									? `#categorie-list${i + 1}`
+									: "#toolbarTop"}
 								>{i !== sortCategoriesPrice.length - 1 ? "sig." : "volver"}</a
 							>
 						</h3>
@@ -276,24 +271,24 @@
 			</StageTransitioner>
 		{/if}
 	</div>
+	<FooterMain {send} />
 </div>
 
-<style lang="scss">
-	$color: red;
+<style>
 	.grid-products {
-		// margin: 0 auto;
-		// margin-top: 3.5em;
+		/* margin: 0 auto; */
+		/* margin-top: 3.5em; */
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		flex-wrap: wrap;
 		width: 100%;
-		// background-color: $color;
+		/* background-color: $color; */
 	}
 
 	.grid-products.lastCat {
-		// background-color: greenyellow;
-		padding-bottom: 50vh;
+		/* background-color: greenyellow; */
+		/* padding-bottom: 50vh; */
 	}
 
 	/* .grid-products { */
@@ -303,6 +298,6 @@
     align-items: center;
     flex-direction: row;
     flex-wrap: wrap;
-    overflow: hidden; */
-	/* } */
+    overflow: hidden; 
+	} */
 </style>

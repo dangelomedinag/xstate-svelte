@@ -10,35 +10,48 @@
 	let scroll_container;
 	let spacer_width;
 	let cardWrapper;
+	let cardWidth;
+	let nextCard = undefined;
+	let rotate = false;
 
 	function scrolling(e) {
-		scroll_container = document.querySelector(".salient__scrollable");
-		spacer_width = document.querySelector(".salient__spacer").clientWidth;
+		if (nextCard == undefined) {
+			console.log("settings");
+			scroll_container = document.querySelector(".salient__scrollable");
+			spacer_width = document.querySelector(".salient__spacer").clientWidth;
+			// elementWith = scroll_container.scrollWidth - scroll_container.clientWidth;
+		}
 		cardWrapper = document.querySelector(".card");
+		cardWidth = cardWrapper.offsetWidth + spacer_width;
+
 		/* width card to step scroll ajustment*/
-		let style =
-			cardWrapper.currentStyle || window.getComputedStyle(cardWrapper);
-		let cardWidth = cardWrapper.offsetWidth + spacer_width;
-		// console.log(cardWrapper.offsetWidth + spacer_width);
+		// let style =
+		// 	cardWrapper.currentStyle || window.getComputedStyle(cardWrapper);
 
-		const elementWith =
-			scroll_container.scrollWidth - scroll_container.clientWidth;
+		nextCard = scroll_container.scrollLeft <= cardWidth;
 
-		e.target.blur();
-		if (scroll_container.scrollLeft >= elementWith) {
+		console.log(nextCard);
+
+		if (nextCard) {
+			scroll_container.scroll({
+				top: 0,
+				left: scroll_container.scrollLeft + cardWidth,
+				behavior: "smooth",
+			});
+			if (scroll_container.scrollLeft + cardWidth > cardWidth) {
+				rotate = true;
+			}
+		} else {
+			rotate = false;
 			scroll_container.scroll({
 				top: 0,
 				left: 0,
 				behavior: "smooth",
 			});
-			return;
 		}
 
-		scroll_container.scroll({
-			top: 0,
-			left: scroll_container.scrollLeft + cardWidth,
-			behavior: "smooth",
-		});
+		// console.log(e.target);
+		e.target.blur();
 	}
 </script>
 
@@ -59,7 +72,11 @@
 				class="salient__btn"
 				on:click={scrolling}
 			>
-				<svg class="salient__icon" viewBox="0 0 20 20">
+				<svg
+					class="salient__icon"
+					class:salient__icon--reverse={rotate}
+					viewBox="0 0 20 20"
+				>
 					<path
 						d="M1.729,9.212h14.656l-4.184-4.184c-0.307-0.306-0.307-0.801,0-1.107c0.305-0.306,0.801-0.306,1.106,0
             l5.481,5.482c0.018,0.014,0.037,0.019,0.053,0.034c0.181,0.181,0.242,0.425,0.209,0.66c-0.004,0.038-0.012,0.071-0.021,0.109
@@ -167,6 +184,7 @@
 		background-color: rgb(223, 223, 223);
 		box-shadow: 0px 0px 0px 6px var(--primary-opacity-3);
 	}
+
 	.salient__scrollable:hover .salient__btn {
 		transform: translate(0%, -50%);
 		opacity: 1;
@@ -176,6 +194,16 @@
 		fill: var(--primary, #f36262);
 		width: 50%;
 		height: auto;
+		transform: rotate(0deg);
+		pointer-events: none;
+		transition-property: transform;
+		transition-delay: 0.2s;
+		transition-timing-function: ease-in-out;
+		transition-duration: 0.6s;
+	}
+
+	.salient__icon--reverse {
+		transform: rotate(180deg);
 	}
 
 	@media (min-width: 640px) {
