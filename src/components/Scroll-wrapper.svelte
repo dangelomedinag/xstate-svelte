@@ -5,62 +5,36 @@
 	import CardProduct from "./Card-product.svelte";
 
 	export let products;
-	// console.log(products);
 
 	let scroll_container;
-	let spacer_width;
-	let cardWrapper;
-	let cardWidth;
-	let nextCard = undefined;
 	let rotate = false;
 
 	function scrolling(e) {
-		if (nextCard == undefined) {
-			console.log("settings");
-			scroll_container = document.querySelector(".salient__scrollable");
-			spacer_width = document.querySelector(".salient__spacer").clientWidth;
-			// elementWith = scroll_container.scrollWidth - scroll_container.clientWidth;
-		}
-		cardWrapper = document.querySelector(".card");
-		cardWidth = cardWrapper.offsetWidth + spacer_width;
+		let card = document.querySelector(".card").clientWidth;
+		let spacer = document.querySelector(".salient__spacer").clientWidth;
+		let next = card + spacer;
+		// rotate = true;
+		console.log(rotate);
 
-		/* width card to step scroll ajustment*/
-		// let style =
-		// 	cardWrapper.currentStyle || window.getComputedStyle(cardWrapper);
+		if (scroll_container.scrollLeft + next > next) rotate = true;
 
-		nextCard = scroll_container.scrollLeft <= cardWidth;
-
-		console.log(nextCard);
-
-		if (nextCard) {
-			scroll_container.scroll({
-				top: 0,
-				left: scroll_container.scrollLeft + cardWidth,
-				behavior: "smooth",
-			});
-			if (scroll_container.scrollLeft + cardWidth > cardWidth) {
-				rotate = true;
-			}
-		} else {
-			rotate = false;
-			scroll_container.scroll({
-				top: 0,
-				left: 0,
-				behavior: "smooth",
-			});
-		}
-
-		// console.log(e.target);
+		scroll_container.scroll({
+			top: 0,
+			left:
+				scroll_container.scrollLeft > next
+					? 0
+					: scroll_container.scrollLeft + next,
+			behavior: "smooth",
+		});
 		e.target.blur();
 	}
 </script>
 
 <section class="salient">
-	<div class="salient__scrollable">
-		{#each products as item (item.id)}
-			<CardProduct product={item} on:clickCard />
-
+	<div class="salient__scrollable" bind:this={scroll_container}>
+		{#each products as item, i (item.id)}
 			<div class="salient__spacer" />
+			<CardProduct product={item} on:clickCard />
 			<button
 				in:scale|local={{
 					delay: 300,
@@ -125,7 +99,7 @@
 		min-width: 100%;
 		/* padding: 1em 5em 1em 0; */
 		padding-top: 1em;
-		padding-right: 5em;
+		padding-right: 0px;
 		padding-bottom: 1em;
 		padding-left: 0px;
 		scroll-behavior: smooth;

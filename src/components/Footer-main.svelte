@@ -64,7 +64,7 @@
 				<div>
 					<label for="search-main">buscar</label>
 					<input
-						style="margin-top:0.5em;display: block; border-radius:50vh; padding: .3em 1em; background: white; color: gray;"
+						style="max-width: 100%;margin-top:0.5em;display: block; border-radius:50vh; padding: .3em 1em; background: white; color: gray;"
 						type="search"
 						id="search-main"
 						placeholder="ej. limon"
