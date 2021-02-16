@@ -20,6 +20,7 @@
 						h5.2c0.7,0,1.3-0.6,1.3-1.3V2.3C19,1.6,18.4,1,17.7,1z M18.2,7.3c0,0.4-0.4,0.8-0.8,0.8h-4.7c-0.4,0-0.8-0.3-0.8-0.8V2.6
 						c0-0.4,0.4-0.8,0.8-0.8h4.7c0.4,0,0.8,0.3,0.8,0.8V7.3z`,
 			sizing: "-sizing-1",
+			center: false,
 		},
 		{
 			id: "section-contact",
@@ -74,13 +75,15 @@
 <section class="section-main" {id}>
 	{#each iconsSections.filter((item) => item.id === id) as { id, title, path, center, sizing } (id)}
 		<!-- icon header -->
-		<div class="icon-wrapper" class:center>
+		<div class="flex-wrapper" class:center>
 			<svg class="icon {sizing}" viewBox="0 0 20 20">
 				<path fill="current" d={path} />
 			</svg>
 		</div>
 		<!-- title -->
-		<h1 class="title">{title}</h1>
+		<div class="flex-wrapper" class:center>
+			<h1 class="title">{title}</h1>
+		</div>
 	{/each}
 
 	<slot />
@@ -90,10 +93,10 @@
 <!-- </AnimationWrapper> -->
 <style>
 	.section-main {
-		/* padding: 0.5em 0.5em; */
+		padding: 0.5em 1.5em;
 	}
 
-	.icon-wrapper {
+	.flex-wrapper {
 		display: flex;
 		justify-content: flex-start;
 		align-items: center;
@@ -105,7 +108,7 @@
 		padding: 0;
 		display: block;
 		/* custom */
-		font-size: 2.5em;
+		font-size: 2.5rem;
 		font-weight: 900;
 	}
 
@@ -125,6 +128,7 @@
 		height: 1px;
 		background-color: var(--primary-opacity-3);
 		border: none;
+		margin: 0;
 	}
 
 	.center {

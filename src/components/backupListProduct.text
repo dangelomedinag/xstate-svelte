@@ -1,0 +1,27 @@
+<div class="wrapper__sorttool">
+	<ProductsSortTool {categories} bind:filter bind:sort />
+</div>
+{#each sortCategoriesPrice as { id, nombre: name }, i (id)}
+	<div class="grid-products">
+		<h3 class="categorie__title" id={"categorie-list" + i}>
+			{name}
+		</h3>
+		{#each products.filter((it) => it.categoria_id === id) as item (item.id)}
+			<div
+				class="wrapper__card-list"
+				animate:flip={{
+					delay: 0,
+					duration: 600,
+					easing: quintInOut,
+					opacity: 0,
+				}}
+			>
+				<CardProduct
+					product={item}
+					on:clickCard={showProduct}
+					delay={0}
+				/>
+			</div>
+		{/each}
+	</div>
+{/each}

@@ -5,20 +5,6 @@
 
 	export let product,
 		delay = 200;
-	// export let skeleton = false;
-	// export let in_fly = {
-	//   delay: 0,
-	//   duration: 1800,
-	//   easing: quintInOut,
-	//   y: 400,
-	//   opacity: 0,
-	// };
-	// export let out_fly = {
-	//   duration: 0,
-	//   easing: linear,
-	//   y: 0,
-	//   opacity: 0,
-	// };
 
 	const dispatch = createEventDispatcher();
 	const { imgs } = product;
@@ -102,6 +88,43 @@
 			},
 		};
 	}
+
+	let intersectionObserver;
+
+	function viewport(node) {
+		if (intersectionObserver) return;
+
+		intersectionObserver = new IntersectionObserver(
+			(entries) => {
+				// let isVisible = false;
+				console.log(entries[0]);
+				if (entries[0].isIntersecting) {
+					if (entries[0].target.dataset.src) {
+						entries[0].target.setAttribute(
+							"src",
+							entries[0].target.dataset.src
+						);
+						delete entries[0].target.dataset.src;
+						entries[0].target.removeAttribute("data-src");
+						intersectionObserver.unobserve(node);
+					}
+				}
+			},
+			{
+				rootMargin: "0px",
+				threshold: 0,
+			}
+		);
+
+		intersectionObserver.observe(node);
+
+		return {
+			destroy() {
+				// console.log(intersectionObserver.unobserve);
+				intersectionObserver.unobserve(node);
+			},
+		};
+	}
 </script>
 
 <article
@@ -130,9 +153,10 @@
 				{/each}
 			{:else}
 				<img
+					use:viewport
 					on:click={ProductClickEvent}
 					class="card__image"
-					src={resizingImg(current)}
+					data-src={resizingImg(current)}
 					alt={product.nombre + " item product"}
 				/>
 			{/if}
@@ -156,11 +180,11 @@
 		</div>
 		<div class="card__bottom" on:click={ProductClickEvent}>
 			<div class="card__details">
-				<h1 class="card__title">{product.nombre}</h1>
+				<div class="card__title">{product.nombre}</div>
 				<p class="card__description">${product.precio}</p>
 			</div>
 			<div class="card__buy">
-				<svg class="svg-reset card__icon-cart" viewBox="0 0 20 20">
+				<svg class="card__icon-cart" viewBox="0 0 20 20">
 					<path
 						d="M17.72,5.011H8.026c-0.271,0-0.49,0.219-0.49,0.489c0,0.271,0.219,0.489,0.49,0.489h8.962l-1.979,4.773H6.763L4.935,5.343C4.926,5.316,4.897,5.309,4.884,5.286c-0.011-0.024,0-0.051-0.017-0.074C4.833,5.166,4.025,4.081,2.33,3.908C2.068,3.883,1.822,4.075,1.795,4.344C1.767,4.612,1.962,4.853,2.231,4.88c1.143,0.118,1.703,0.738,1.808,0.866l1.91,5.661c0.066,0.199,0.252,0.333,0.463,0.333h8.924c0.116,0,0.22-0.053,0.308-0.128c0.027-0.023,0.042-0.048,0.063-0.076c0.026-0.034,0.063-0.058,0.08-0.099l2.384-5.75c0.062-0.151,0.046-0.323-0.045-0.458C18.036,5.092,17.883,5.011,17.72,5.011z"
 					/>
@@ -174,39 +198,6 @@
 			</div>
 		</div>
 	</main>
-	<!-- <div class="card__inside">
-		<div class="card__icon">
-			<svg class="svg-reset" viewBox="0 0 20 20">
-				<path
-					d="M10,1.445c-4.726,0-8.555,3.829-8.555,8.555c0,4.725,3.829,8.555,8.555,8.555c4.725,0,8.555-3.83,8.555-8.555C18.555,5.274,14.725,1.445,10,1.445 M10,17.654c-4.221,0-7.654-3.434-7.654-7.654c0-4.221,3.433-7.654,7.654-7.654c4.222,0,7.654,3.433,7.654,7.654C17.654,14.221,14.222,17.654,10,17.654 M14.39,10c0,0.248-0.203,0.45-0.45,0.45H6.06c-0.248,0-0.45-0.203-0.45-0.45s0.203-0.45,0.45-0.45h7.879C14.187,9.55,14.39,9.752,14.39,10 M14.39,12.702c0,0.247-0.203,0.449-0.45,0.449H6.06c-0.248,0-0.45-0.202-0.45-0.449c0-0.248,0.203-0.451,0.45-0.451h7.879C14.187,12.251,14.39,12.454,14.39,12.702 M14.39,7.298c0,0.248-0.203,0.45-0.45,0.45H6.06c-0.248,0-0.45-0.203-0.45-0.45s0.203-0.45,0.45-0.45h7.879C14.187,6.848,14.39,7.051,14.39,7.298"
-				/>
-			</svg>
-		</div>
-		<div class="card__contents">
-			<table class="card__table">
-				<tr>
-					<th>Width</th>
-					<th>Height</th>
-				</tr>
-				<tr>
-					<td>3000mm</td>
-					<td>4000mm</td>
-				</tr>
-				<tr>
-					<th>Something</th>
-					<th>Something</th>
-				</tr>
-				<tr>
-					<td>200mm</td>
-					<td>200mm</td>
-				</tr>
-				<tr>
-					<th>Something</th>
-					<th>Something</th>
-				</tr>
-			</table>
-		</div>
-	</div> -->
 </article>
 
 <style>
@@ -291,25 +282,26 @@
 		transition: transform 0.5s;
 	}
 	.card__details {
-		padding: 0 1em;
-		margin: auto 0;
+		padding: 0.4em 1em;
+		/* margin: auto 0; */
 		width: 75%;
-		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-evenly;
+		/* overflow: hidden; */
 	}
+
 	.card__title {
-		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
-		color: var(--neutral-6);
-		font-size: 1em;
+		overflow: hidden;
 		margin: 0;
 		padding: 0;
-		position: relative;
+		font-size: 1rem;
+		color: var(--neutral-6);
 	}
+
 	.card__description {
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
 		color: var(--neutral-6);
 		margin: 0;
 		padding: 0;

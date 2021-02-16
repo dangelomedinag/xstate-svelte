@@ -5,6 +5,7 @@
 </script>
 
 <div class="select">
+	<slot />
 	<select class="select__item select__filter" bind:value={filter}>
 		<option class="select__option" value="todos">todos</option>
 		{#each categories as { nombre: name, id }}
@@ -24,16 +25,19 @@
 	.select {
 		text-align: center;
 		padding: 1em;
+		display: flex;
+		justify-content: space-evenly;
 	}
 
 	.select__item {
 		border: 1px solid rgba(255, 255, 255, 0.1);
-		display: inline-block;
+		min-width: 0;
+		overflow: hidden;
 		color: var(--primary);
 		background-color: var(--primary-opacity-1);
 		border-radius: 5px;
 		cursor: pointer;
-		margin: 0 0.5em;
+		margin: 0 0.2em;
 		/* border: 1px solid var(--primary); */
 	}
 	.select__item:hover {

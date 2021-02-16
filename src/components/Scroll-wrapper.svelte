@@ -13,8 +13,6 @@
 		let card = document.querySelector(".card").clientWidth;
 		let spacer = document.querySelector(".salient__spacer").clientWidth;
 		let next = card + spacer;
-		// rotate = true;
-		console.log(rotate);
 
 		if (scroll_container.scrollLeft + next > next) rotate = true;
 
@@ -33,8 +31,8 @@
 <section class="salient">
 	<div class="salient__scrollable" bind:this={scroll_container}>
 		{#each products as item, i (item.id)}
-			<div class="salient__spacer" />
 			<CardProduct product={item} on:clickCard />
+			<div class="salient__spacer" />
 			<button
 				in:scale|local={{
 					delay: 300,
@@ -103,21 +101,20 @@
 		padding-bottom: 1em;
 		padding-left: 0px;
 		scroll-behavior: smooth;
-		scrollbar-color: var(--primary, #f36262) transparent;
+		scrollbar-color: var(--primary, #f36262) transparent !important;
 		scrollbar-width: thin;
 	}
 
 	.salient__scrollable::-webkit-scrollbar {
 		height: 5px;
 		border-radius: 10px;
-		overflow: hidden;
 	}
 	.salient__scrollable::-webkit-scrollbar-track {
 		margin: 0 14px;
 	}
 	.salient__scrollable::-webkit-scrollbar-thumb {
 		border-radius: 10px;
-		background: var(--primary-opacity-1, #f362621a);
+		background: var(--primary-opacity-2, #f362621a);
 	}
 	.salient__scrollable::-webkit-scrollbar-thumb:hover {
 		background: var(--primary, #e98585);

@@ -104,12 +104,8 @@
 		display: flex;
 		justify-content: flex-start;
 		align-items: center;
-		/* padding: 1em 0; */
-		/* margin: 0.2em 0; */
 		border-bottom: 1px solid var(--primary-opacity-2);
 		cursor: pointer;
-		/* background-color: var(--primary-opacity-1); */
-		/* border-radius: 10px; */
 	}
 	.link {
 		padding: 1em 0;
@@ -117,6 +113,12 @@
 		height: 100%;
 		color: inherit;
 	}
+
+	.link:focus .label {
+		color: var(--primary);
+		outline: 1px dashed var(--primary-opacity-1);
+	}
+
 	.link:link,
 	.link:hover,
 	.link:active {

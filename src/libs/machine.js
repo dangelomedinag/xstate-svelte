@@ -1,6 +1,6 @@
-import { Machine, assign } from "xstate";
+import { Machine } from "xstate";
 
-const stepsMachine = Machine({
+const stateMachine = Machine({
   id: "steps",
   initial: "idle",
   states: {
@@ -13,7 +13,10 @@ const stepsMachine = Machine({
     },
     init: {
       on: {
-        MID: "middle",
+        MID: {
+					target: "middle",
+					
+				},
         FINAL: "final",
       }
     },
@@ -32,4 +35,4 @@ const stepsMachine = Machine({
   }
 })
 
-export default stepsMachine;
+export default stateMachine;

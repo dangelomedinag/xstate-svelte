@@ -1,13 +1,20 @@
 <script>
-	import { onMount } from "svelte";
+	// xstate
 	import { useMachine } from "./libs/useMachine";
-	import stepsMachine from "./libs/machine";
-	import StageTransitioner from "./Stage-transitioner.svelte";
-	const { state, send } = useMachine(stepsMachine, {});
-	import { quintOut, quintIn, quintInOut } from "svelte/easing";
+	import stateMachine from "./libs/machine";
+	const { service } = useMachine(stateMachine, {}, scrollTop);
+
+	// rest imports
+	import { onMount } from "svelte";
+	import { quintInOut } from "svelte/easing";
 	import { flip } from "svelte/animate";
+
+	// fallback data
 	import productsBack from "../products";
 	import categoriesBack from "../categories";
+
+	// components
+	import StageTransitioner from "./Stage-transitioner.svelte";
 	import ProductsSortTool from "./components/Products-sort-tool.svelte";
 	import ScrollWrapper from "./components/Scroll-wrapper.svelte";
 	import Section from "./components/Section.svelte";
@@ -16,6 +23,9 @@
 	import ContactMethods from "./components/Contact-methods.svelte";
 	import CardProduct from "./components/Card-product.svelte";
 	import FooterMain from "./components/Footer-main.svelte";
+	import SpinLoader from "./components/Spin-loader.svelte";
+	import ListProducts from "./components/List-products.svelte";
+	import ContactForm from "./components/Contact-form.svelte";
 
 	let products = [],
 		categories = [],
@@ -27,9 +37,16 @@
 		filter = "todos",
 		sort = "menor";
 
-	$: empty = !!products.length;
-	$: emptys = !!products.length && !!categories.length;
-	$: console.log(empty);
+	$: emptyP = !!!products.length;
+	$: emptyC = !!!categories.length;
+
+	// functions
+	onMount(() => {
+		FETCH(() => {
+			service.send("MOUNT");
+			console.log("state service running");
+		});
+	});
 
 	function FETCH(callback) {
 		function failure(res, i) {
@@ -55,21 +72,13 @@
 
 	function showProduct(e) {
 		currproduct = e.detail.product;
-		scrollTop();
-		send("FINAL");
+		// scrollTop();
+		service.send("FINAL");
 	}
 
-	onMount(() => {
-		FETCH(() => {
-			send("MOUNT");
-		});
-	});
+	$: if (!emptyP && !emptyC) {
+		filterProductsSalient = products.filter(({ salient }) => salient);
 
-	$: if (products.length > 0) {
-		filterProductsSalient = products.filter((item) => item.salient);
-	}
-
-	$: if (emptys) {
 		sortCategoriesPrice = categories
 			.sort((a, b) => {
 				function price({ id }) {
@@ -92,16 +101,18 @@
 
 	function tagsHandler(id) {
 		filter = id;
-		send("MID");
+		service.send("MID");
 	}
 	function scrollTop() {
 		window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 	}
+	let show = false;
 </script>
 
 <div class="container-full">
 	<div class="container">
-		{#if $state.matches("init")}
+		{#if $service.matches("init")}
+			<ContactForm {show} on:close={() => (show = false)} />
 			<StageTransitioner>
 				<Section id="section-salient">
 					<ScrollWrapper
@@ -118,8 +129,8 @@
 							main
 							bouncy
 							on:click={() => {
-								send("MID");
-								scrollTop();
+								service.send("MID");
+								// scrollTop();
 							}}
 						>
 							Mostrar todos
@@ -132,7 +143,9 @@
 						ponernos en contacto.
 					</p>
 					<ContactMethods />
-					<SectionButton main>Déjanos un comemtario</SectionButton>
+					<SectionButton main on:click={() => (show = !show)}
+						>Déjanos un comemtario</SectionButton
+					>
 				</Section>
 
 				<Section id="section-about">
@@ -173,23 +186,22 @@
 			id="toolbarTop"
 			style="padding-top: 1em; display: flex; justify-content: center; align-items: center"
 		>
-			{#if $state.matches("middle")}
-				<button on:click={() => send("INIT")}>inicio</button>
+			{#if $service.matches("middle")}
+				<button on:click={() => service.send("INIT")}>inicio</button>
 				<!-- {#key filter} -->
 				<button>productos ({filter === "todos" ? filter : ""})</button>
-				<!-- {/key} -->
 			{/if}
 
-			{#if $state.matches("final")}
+			{#if $service.matches("final")}
 				<button
 					on:click={() => {
-						send("INIT");
+						service.send("INIT");
 						currproduct = undefined;
 					}}>inicio</button
 				>
 				<button
 					on:click={() => {
-						send("MID");
+						service.send("MID");
 						currproduct = undefined;
 					}}
 					>productos
@@ -209,59 +221,38 @@
 						</option>
 					{/each}
 				</select>
-				<!-- <button>{product.nombre}</button> -->
 			{/if}
-			<!-- <button on:click={() => send('RETURN')}>{'<'} {product.nombre}</button> -->
 		</nav>
 
-		{#if $state.matches("middle")}
+		{#if $service.matches("middle")}
 			<StageTransitioner>
-				<div
-					style="position: sticky; top: 0; z-index: 999999999; background-color: var(--secondary);width: 100%;"
+				<ListProducts
+					{products}
+					{sortCategoriesPrice}
+					on:clickCard={showProduct}
 				>
-					<ProductsSortTool {categories} bind:filter bind:sort />
-				</div>
-				{#each sortCategoriesPrice as { id, nombre: name }, i (id)}
-					<div
-						class:lastCat={i == sortCategoriesPrice.length - 1}
-						class="grid-products"
-					>
-						<h3
-							id={"categorie-list" + i}
-							style="margin:0 0 1em 0;padding: 0.5em;text-align: center;position: sticky; top: 66px; z-index: 99999999; background-color: var(--secondary);width: 100%; border-bottom: 1px solid var(--neutral-opacity-1);"
+					<ProductsSortTool {categories} bind:filter bind:sort>
+						<button
+							style="overflow:hidden; margin: 0 .3em"
+							on:click={() => {
+								service.send("INIT");
+							}}
 						>
-							{name}
-							<a
-								style="font-size: .75em; text-align: right"
-								href={i !== sortCategoriesPrice.length - 1
-									? `#categorie-list${i + 1}`
-									: "#toolbarTop"}
-								>{i !== sortCategoriesPrice.length - 1 ? "sig." : "volver"}</a
+							<svg
+								style="display: flex; justify-content:center; align-items: center; max-height: 100%"
+								viewBox="0 0 20 20"
 							>
-						</h3>
-						{#each products.filter((it) => it.categoria_id === id) as item (item.id)}
-							<div
-								animate:flip={{
-									delay: 0,
-									duration: 600,
-									easing: quintInOut,
-									opacity: 0,
-								}}
-								style="padding: 1em;"
-							>
-								<CardProduct
-									product={item}
-									on:clickCard={showProduct}
-									delay={0}
+								<path
+									d="M15.971,7.708l-4.763-4.712c-0.644-0.644-1.769-0.642-2.41-0.002L3.99,7.755C3.98,7.764,3.972,7.773,3.962,7.783C3.511,8.179,3.253,8.74,3.253,9.338v6.07c0,1.146,0.932,2.078,2.078,2.078h9.338c1.146,0,2.078-0.932,2.078-2.078v-6.07c0-0.529-0.205-1.037-0.57-1.421C16.129,7.83,16.058,7.758,15.971,7.708z M15.68,15.408c0,0.559-0.453,1.012-1.011,1.012h-4.318c0.04-0.076,0.096-0.143,0.096-0.232v-3.311c0-0.295-0.239-0.533-0.533-0.533c-0.295,0-0.534,0.238-0.534,0.533v3.311c0,0.09,0.057,0.156,0.096,0.232H5.331c-0.557,0-1.01-0.453-1.01-1.012v-6.07c0-0.305,0.141-0.591,0.386-0.787c0.039-0.03,0.073-0.066,0.1-0.104L9.55,3.75c0.242-0.239,0.665-0.24,0.906,0.002l4.786,4.735c0.024,0.033,0.053,0.063,0.084,0.09c0.228,0.196,0.354,0.466,0.354,0.76V15.408z"
 								/>
-							</div>
-						{/each}
-					</div>
-				{/each}
+							</svg>
+						</button>
+					</ProductsSortTool>
+				</ListProducts>
 			</StageTransitioner>
 		{/if}
 
-		{#if $state.matches("final")}
+		{#if $service.matches("final")}
 			<StageTransitioner>
 				{#key currproduct}
 					<ItemProduct product={currproduct}>
@@ -271,33 +262,8 @@
 			</StageTransitioner>
 		{/if}
 	</div>
-	<FooterMain {send} />
+	<FooterMain send={service.send} />
 </div>
 
 <style>
-	.grid-products {
-		/* margin: 0 auto; */
-		/* margin-top: 3.5em; */
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-wrap: wrap;
-		width: 100%;
-		/* background-color: $color; */
-	}
-
-	.grid-products.lastCat {
-		/* background-color: greenyellow; */
-		/* padding-bottom: 50vh; */
-	}
-
-	/* .grid-products { */
-	/* padding: 1em; */
-	/* display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    flex-wrap: wrap;
-    overflow: hidden; 
-	} */
 </style>

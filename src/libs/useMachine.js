@@ -1,25 +1,17 @@
-import { readable } from "svelte/store";
 import { interpret } from "xstate";
 
-export function useMachine(machine, options) {
-  const service = interpret(machine, options);
+export function useMachine(machine, config, transiton,options) {
+	const extendsConfig = config ? machine.withConfig(config) : machine
 
-  const store = readable(machine.initialState, set => {
-    service.onTransition(state => {
-      console.log(state.value)
-      if(state.changed) {
-        set(state);
-      }
-    });
-    service.start();
+  const service = interpret(extendsConfig, options);
 
-    return ()=>{
-      service.stop();
-    };
-  });
+	service.onTransition((state=>{
+		if(state.changed && transiton) {
+			transiton()
+		}
+	})).start()
 
   return {
-    state: store,
-    send: service.send
+    service
   }
 }

@@ -118,8 +118,7 @@
 	.course-preview {
 		background-color: var(--primary);
 		color: #fff;
-		padding: 30px;
-		/* max-width: 100%; */
+		padding: 0.8em 1.5em;
 		width: 100%;
 	}
 
@@ -150,7 +149,7 @@
 
 	.course .title {
 		letter-spacing: 1px;
-		margin: 0.5em 0 1em;
+		margin: 0.5em 0;
 	}
 	.course .description {
 		margin: 10px 0;
@@ -169,7 +168,7 @@
 
 	.course-info {
 		background-color: var(--neutral-1);
-		padding: 30px;
+		padding: 0.8em 1.5em;
 		position: relative;
 		width: 100%;
 	}
@@ -256,7 +255,7 @@
 	.list-images-wrapper {
 		position: relative;
 		border-radius: 10px;
-		overflow: hidden;
+		/* overflow: hidden; */
 		padding: 0.5em;
 		/* background: var(--neutral-6); */
 		width: 100%;
@@ -265,31 +264,31 @@
 		align-items: center;
 		flex-wrap: no-wrap;
 		margin-bottom: 0.5em;
+		overflow-y: hidden;
 		overflow-x: auto;
 		border: 1px solid var(--primary);
+		scroll-behavior: smooth;
+		scrollbar-color: var(--primary, #f36262) transparent !important;
+		scrollbar-width: thin;
 	}
 
 	.list-images-wrapper::-webkit-scrollbar {
-		/* width: 100%; */
 		height: 5px;
-		background-color: rgba(0, 0, 0, 0);
-		/* margin-top: 2em; */
+		border-radius: 10px;
 	}
 	/* Track */
 	.list-images-wrapper::-webkit-scrollbar-track {
 		/* height: 5px; */
-		margin: 0 0.8em;
-		background: #2a221d;
-		border-radius: 10px;
+		margin: 0 14px;
 	}
 	/* Handle */
 	.list-images-wrapper::-webkit-scrollbar-thumb {
 		border-radius: 10px;
-		background: #f36262;
+		background: var(--primary-opacity-2, #f362621a);
 	}
 	/* Handle on hover */
 	.list-images-wrapper::-webkit-scrollbar-thumb:hover {
-		background: #e98585;
+		background: var(--primary, #e98585);
 	}
 	.image-wrapper {
 		position: relative;
