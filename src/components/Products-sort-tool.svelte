@@ -26,7 +26,7 @@
 		text-align: center;
 		padding: 1em;
 		display: flex;
-		justify-content: space-evenly;
+		justify-content: center;
 	}
 
 	.select__item {

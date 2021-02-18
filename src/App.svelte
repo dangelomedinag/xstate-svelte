@@ -25,7 +25,7 @@
 	import FooterMain from "./components/Footer-main.svelte";
 	import SpinLoader from "./components/Spin-loader.svelte";
 	import ListProducts from "./components/List-products.svelte";
-	import ContactForm from "./components/Contact-form.svelte";
+	import WindowModal from "./components/Window-modal.svelte";
 
 	let products = [],
 		categories = [],
@@ -109,10 +109,10 @@
 	let show = false;
 </script>
 
+<WindowModal {show} on:close={() => (show = false)} />
 <div class="container-full">
 	<div class="container">
 		{#if $service.matches("init")}
-			<ContactForm {show} on:close={() => (show = false)} />
 			<StageTransitioner>
 				<Section id="section-salient">
 					<ScrollWrapper

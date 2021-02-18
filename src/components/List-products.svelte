@@ -2,6 +2,7 @@
 	import { flip } from "svelte/animate";
 	import { quintInOut } from "svelte/easing";
 	import CardProduct from "./Card-product.svelte";
+	import CardActions from "./Card-actions.svelte";
 	export let sortCategoriesPrice, products;
 
 	let flipAnimate = {
@@ -9,6 +10,30 @@
 		duration: 600,
 		easing: quintInOut,
 		opacity: 0,
+	};
+
+	// test share
+	const shareData = {
+		title: "Consweet",
+		text: "Descubre estas delicias que esperan por ti!",
+		url: "https://consweet.netlify.app/",
+	};
+
+	// Must be triggered some kind of "user activation"
+	const shared = async () => {
+		try {
+			await navigator.share(shareData);
+			// resultPara.textContent = 'MDN shared successfully'
+		} catch (err) {
+			// resultPara.textContent = 'Error: ' + err
+			console.error(`navigator.share() no disponible. \n ${err}`);
+			try {
+				await navigator.clipboard.writeText("https://consweet.netlify.app/");
+				console.log("copy to clipboard");
+			} catch (e) {
+				console.log(e);
+			}
+		}
 	};
 </script>
 
@@ -23,6 +48,12 @@
 		{#each products.filter((it) => it.categoria_id === id) as item (item.id)}
 			<div class="wrapper__card-list" animate:flip={flipAnimate}>
 				<CardProduct product={item} on:clickCard delay={0} />
+				<CardActions
+					{item}
+					on:like={(e) => console.log("like", e.detail.id)}
+					on:comment={(e) => console.log("comment", e.detail.id)}
+					on:share={shared}
+				/>
 			</div>
 		{/each}
 	</div>
@@ -49,7 +80,7 @@
 	}
 	.categorie__title {
 		width: 100%;
-		margin: 0 0 1em 0;
+		margin: 0 0 0em 0;
 		padding: 0.5em;
 		text-align: center;
 		position: sticky;
@@ -68,6 +99,9 @@
 	}
 
 	@media (min-width: 768px) {
+		.categorie__title {
+			text-align: left;
+		}
 	}
 
 	@media (min-width: 1024px) {

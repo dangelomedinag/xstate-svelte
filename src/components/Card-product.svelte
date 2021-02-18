@@ -97,7 +97,7 @@
 		intersectionObserver = new IntersectionObserver(
 			(entries) => {
 				// let isVisible = false;
-				console.log(entries[0]);
+				// console.log(entries[0]);
 				if (entries[0].isIntersecting) {
 					if (entries[0].target.dataset.src) {
 						entries[0].target.setAttribute(
@@ -299,6 +299,7 @@
 		padding: 0;
 		font-size: 1rem;
 		color: var(--neutral-6);
+		font-weight: 700;
 	}
 
 	.card__description {

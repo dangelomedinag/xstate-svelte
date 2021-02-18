@@ -97,7 +97,7 @@
 		min-width: 100%;
 		/* padding: 1em 5em 1em 0; */
 		padding-top: 1em;
-		padding-right: 0px;
+		padding-right: 3em;
 		padding-bottom: 1em;
 		padding-left: 0px;
 		scroll-behavior: smooth;

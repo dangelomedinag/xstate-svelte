@@ -5,18 +5,18 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import replace from "@rollup/plugin-replace";
-import {
-  pug,
-  coffeescript,
-  typescript,
-  less,
-  scss,
-  sass,
-  stylus,
-  postcss,
-  globalStyle,
-  babel,
-} from 'svelte-preprocess';
+// import {
+  // pug,
+  // coffeescript,
+  // typescript,
+  // less,
+  // scss,
+  // sass,
+  // stylus,
+  // postcss,
+  // globalStyle,
+  // babel,
+// } from 'svelte-preprocess';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -56,7 +56,7 @@ export default {
 				dev: !production
 			},
 			// preprocess: [
-			// 	scss({}),
+				// scss({}),
 			// ]
 		}),
 		replace({ 
