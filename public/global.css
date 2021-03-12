@@ -1,125 +1,5 @@
-/* @font-face {
-	font-family: "Noto Sans JP";
-	font-style: normal;
-	font-weight: 100;
-	src: url("/fonts/noto-sans-jp-v28-latin-100.eot");
-	src: local(""),
-		url("/fonts/noto-sans-jp-v28-latin-100.eot?#iefix")
-			format("embedded-opentype"),
-		url("/fonts/noto-sans-jp-v28-latin-100.woff2") format("woff2"),
-		url("/fonts/noto-sans-jp-v28-latin-100.woff") format("woff"),
-		url("/fonts/noto-sans-jp-v28-latin-100.ttf") format("truetype"),
-		url("/fonts/noto-sans-jp-v28-latin-100.svg#NotoSansJP") format("svg");
-} */
-
-@font-face {
-	font-family: "Noto Sans JP";
-	font-style: normal;
-	font-weight: 300;
-	src: url("/fonts/noto-sans-jp-v28-latin-300.eot");
-	src: local(""),
-		url("/fonts/noto-sans-jp-v28-latin-300.eot?#iefix")
-			format("embedded-opentype"),
-		url("/fonts/noto-sans-jp-v28-latin-300.woff2") format("woff2"),
-		url("/fonts/noto-sans-jp-v28-latin-300.woff") format("woff"),
-		url("/fonts/noto-sans-jp-v28-latin-300.ttf") format("truetype"),
-		url("/fonts/noto-sans-jp-v28-latin-300.svg#NotoSansJP") format("svg");
-}
-@font-face {
-	font-family: "Noto Sans JP";
-	font-style: normal;
-	font-weight: 400;
-	src: url("/fonts/noto-sans-jp-v28-latin-regular.eot");
-	src: local(""),
-		url("/fonts/noto-sans-jp-v28-latin-regular.eot?#iefix")
-			format("embedded-opentype"),
-		url("/fonts/noto-sans-jp-v28-latin-regular.woff2") format("woff2"),
-		url("/fonts/noto-sans-jp-v28-latin-regular.woff") format("woff"),
-		url("/fonts/noto-sans-jp-v28-latin-regular.ttf") format("truetype"),
-		url("/fonts/noto-sans-jp-v28-latin-regular.svg#NotoSansJP") format("svg");
-}
-/* @font-face {
-	font-family: "Noto Sans JP";
-	font-style: normal;
-	font-weight: 500;
-	src: url("/fonts/noto-sans-jp-v28-latin-500.eot");
-	src: local(""),
-		url("/fonts/noto-sans-jp-v28-latin-500.eot?#iefix")
-			format("embedded-opentype"),
-		url("/fonts/noto-sans-jp-v28-latin-500.woff2") format("woff2"),
-		url("/fonts/noto-sans-jp-v28-latin-500.woff") format("woff"),
-		url("/fonts/noto-sans-jp-v28-latin-500.ttf") format("truetype"),
-		url("/fonts/noto-sans-jp-v28-latin-500.svg#NotoSansJP") format("svg");
-} */
-@font-face {
-	font-family: "Noto Sans JP";
-	font-style: normal;
-	font-weight: 700;
-	src: url("/fonts/noto-sans-jp-v28-latin-700.eot");
-	src: local(""),
-		url("/fonts/noto-sans-jp-v28-latin-700.eot?#iefix")
-			format("embedded-opentype"),
-		url("/fonts/noto-sans-jp-v28-latin-700.woff2") format("woff2"),
-		url("/fonts/noto-sans-jp-v28-latin-700.woff") format("woff"),
-		url("/fonts/noto-sans-jp-v28-latin-700.ttf") format("truetype"),
-		url("/fonts/noto-sans-jp-v28-latin-700.svg#NotoSansJP") format("svg");
-}
-@font-face {
-	font-family: "Noto Sans JP";
-	font-style: normal;
-	font-weight: 900;
-	src: url("/fonts/noto-sans-jp-v28-latin-900.eot");
-	src: local(""),
-		url("/fonts/noto-sans-jp-v28-latin-900.eot?#iefix")
-			format("embedded-opentype"),
-		url("/fonts/noto-sans-jp-v28-latin-900.woff2") format("woff2"),
-		url("/fonts/noto-sans-jp-v28-latin-900.woff") format("woff"),
-		url("/fonts/noto-sans-jp-v28-latin-900.ttf") format("truetype"),
-		url("/fonts/noto-sans-jp-v28-latin-900.svg#NotoSansJP") format("svg");
-}
-
-:root {
-	--primary: #f36566;
-	--primary-opacity-1: rgba(243, 101, 102, 0.1);
-	--primary-opacity-2: rgba(243, 101, 102, 0.2);
-	--primary-opacity-3: rgba(243, 101, 102, 0.3);
-	--primary-opacity-4: rgba(243, 101, 102, 0.4);
-	--primary-opacity-5: rgba(243, 101, 102, 0.5);
-	--primary-opacity-6: rgba(243, 101, 102, 0.6);
-	--primary-opacity-7: rgba(243, 101, 102, 0.7);
-	--primary-opacity-8: rgba(243, 101, 102, 0.8);
-	--primary-opacity-9: rgba(243, 101, 102, 0.9);
-	--secondary: #2a221d;
-	--secondary-opacity-1: rgba(42, 34, 29, 0.1);
-	--secondary-opacity-2: rgba(42, 34, 29, 0.2);
-	--secondary-opacity-3: rgba(42, 34, 29, 0.3);
-	--secondary-opacity-4: rgba(42, 34, 29, 0.4);
-	--secondary-opacity-5: rgba(42, 34, 29, 0.5);
-	--secondary-opacity-6: rgba(42, 34, 29, 0.6);
-	--secondary-opacity-7: rgba(42, 34, 29, 0.7);
-	--secondary-opacity-8: rgba(42, 34, 29, 0.8);
-	--secondary-opacity-9: rgba(42, 34, 29, 0.9);
-	--neutral-1: #f6f6f6;
-	--neutral-2: #e4e4e4;
-	--neutral-3: #cecece;
-	--neutral-4: #b1b1b1;
-	--neutral-5: #949494;
-	--neutral-6: #7c7c7c;
-	--neutral-7: #626262;
-	--neutral-8: #474747;
-	--neutral-9: #353535;
-	--neutral: #cfcfcf;
-	--neutral-opacity-1: rgba(207, 207, 207, 0.1);
-	--neutral-opacity-2: rgba(207, 207, 207, 0.2);
-	--neutral-opacity-3: rgba(207, 207, 207, 0.3);
-	--neutral-opacity-4: rgba(207, 207, 207, 0.4);
-	--neutral-opacity-5: rgba(207, 207, 207, 0.5);
-	--neutral-opacity-6: rgba(207, 207, 207, 0.6);
-	--neutral-opacity-7: rgba(207, 207, 207, 0.7);
-	--neutral-opacity-8: rgba(207, 207, 207, 0.8);
-	--neutral-opacity-9: rgba(207, 207, 207, 0.9);
-	--header-main-height: 60px;
-	--breadcrumb-subsection-height: 50px;
+html {
+	font-size: 100%;
 }
 
 html,
@@ -130,14 +10,32 @@ body {
 	scroll-behavior: smooth;
 }
 
+::-moz-selection {
+	/* Code for Firefox */
+	color: white;
+	background: var(--primary);
+}
+
+::selection {
+	color: white;
+	background: var(--primary);
+}
+
 body {
-	background-color: var(--secondary);
-	color: var(--neutral);
+	background-color: var(--bg);
+	color: var(--color-body);
 	margin: 0;
 	padding: 0;
 	font-family: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Segoe UI",
 		Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	font-weight: 300;
 }
+
+/* @media (max-width: 250px) {
+	html {
+		font-size: 90%;
+	}
+} */
 
 a {
 	color: rgb(0, 100, 200);
@@ -162,26 +60,63 @@ svg {
 	width: 1em;
 	height: 1em;
 	fill: #d8d8d8;
-	/* fill: "current"; */
 }
 
-/* defualt */
-.container {
+/* h1,
+h2,
+h2,
+h3,
+h5,
+h6 {
+	font-size: 16px;
+} */
+
+.container,
+.container-full {
 	position: relative;
 	margin: 0 auto;
 	width: 100%;
 	padding: 0;
 }
 
-.container-full {
-	margin: 0;
-	width: 100%;
-	padding: 0;
+.track {
+	display: flex;
+	justify-content: flex-start;
+	height: 100%;
+	flex-direction: row;
+	flex-wrap: wrap;
+	flex-basis: 100%;
+	flex-grow: 1;
+	flex-shrink: 0;
+	/* padding: var(--space-y) var(--space-x); */
 }
 
-@media (min-width: 640px) {
-	.container {
-		width: 95%;
+.track > .col {
+	--gap-col: 0.5em;
+	--cols: 2;
+
+	flex-basis: 100%;
+	flex-grow: 0;
+	flex-shrink: 1;
+	min-width: 0;
+}
+
+.track .col:nth-child(3n) {
+	/* background-color: rgb(255, 0, 0, 0.1); */
+}
+.track .col:nth-child(2n) {
+	/* background-color: rgb(0, 0, 255, 0.05); */
+}
+
+@media (min-width: 768px) {
+	.track > .col {
+		flex-basis: calc(calc(100% / var(--cols)) - var(--gap-col));
+	}
+	.track .col:nth-child(2n + 1) {
+		margin-right: var(--gap-col);
+	}
+	.track .col:nth-child(2n) {
+		margin-left: var(--gap-col);
 	}
 }
 
@@ -190,21 +125,17 @@ svg {
 		width: 85%;
 	}
 }
-
-@media (min-width: 1024px) {
+@media (min-width: 1366) {
 	.container {
 		width: 80%;
 	}
 }
-
-@media (min-width: 1280px) {
+@media (min-width: 1920) {
 	.container {
 		width: 75%;
 	}
 }
 
-/* @media (min-width: 1536px) {
-	.container {
-		width: 70%;
-	}
-} */
+.noscroll {
+	overflow: hidden;
+}

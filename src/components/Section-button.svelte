@@ -2,12 +2,17 @@
 	//? imports system
 	import { scale, slide } from "svelte/transition";
 	import { quintOut } from "svelte/easing";
+	import SpinLoader from "./Spin-loader.svelte";
 
 	//? imports components, store and function
 
 	//? props
 
 	export let href = false,
+		loading = false,
+		outline = false,
+		disabled = false,
+		type = "button",
 		main = false,
 		block = false,
 		bouncy = false,
@@ -31,26 +36,35 @@
 
 {#if !href}
 	<button
-		in:transition={scaleTransition}
+		{type}
+		in:transition|local={scaleTransition}
 		on:click
-		class={`link-item ${main ? "main" : "badge outline"}`}
+		class={`link-item ${main ? "main" : "badge"}`}
+		class:outline
 		class:block
 		class:bouncy
+		{disabled}
 	>
-		<slot />
+		{#if loading}
+			<SpinLoader color="var(--btn-color-disabled)" />
+		{:else}
+			<slot />
+		{/if}
+
 		{#if !main}
 			<svg class="svg-reset icon-animated" viewBox="0 0 20 20">
-				<path fill="current" d={path} />
+				<path d={path} />
 			</svg>
 		{/if}
 	</button>
 {:else}
 	<a
-		in:transition={scaleTransition}
+		in:transition|local={scaleTransition}
 		on:click
 		role="button"
 		{href}
-		class={`link-item ${main ? "main" : "badge outline"}`}
+		class={`link-item ${main ? "main" : "badge"}`}
+		class:outline
 		class:block
 		class:bouncy
 	>
@@ -63,7 +77,7 @@
 	</a>
 {/if}
 
-<style>
+<style lang="scss">
 	@keyframes bouncy {
 		0% {
 			top: 0em;
@@ -91,6 +105,10 @@
 	.bouncy {
 		animation: bouncy 5s infinite linear;
 		position: relative;
+
+		&:disabled {
+			animation: none;
+		}
 	}
 
 	.link-item {
@@ -101,48 +119,66 @@
 		text-align: center;
 		cursor: pointer;
 		outline: 0;
+		border-width: 1px;
+		border-style: solid;
+		border-color: var(--btn-border);
+		transform: translateY(0);
+		border-radius: 50vh;
 		/* margin: 0 auto; */
-	}
-	.link-item:focus {
-		box-shadow: 0 0 0 5px var(--secondary), 0 0 0 7px var(--primary-opacity-2);
+
+		&:focus {
+			transform: translateY(-5%);
+			box-shadow: 0 1px 1px var(--btn-border-focus),
+				0 2px 2px var(--btn-border-focus), 0 4px 4px var(--btn-border-focus),
+				0 6px 8px var(--btn-border-focus), 0 8px 16px var(--btn-border-focus);
+		}
+
+		&:disabled {
+			cursor: not-allowed;
+			border-color: var(--btn-border-disabled);
+			color: var(--btn-color-disabled);
+			background-color: var(--btn-bg-disabled);
+			// border: none;
+		}
 	}
 
 	.main {
-		color: var(--primary);
-		padding: 0 3em;
-		background-color: rgba(243, 101, 102, 0.05);
-		border: none;
-		transition: background 0.3s, color 0.3s;
-		border-radius: 10px;
+		padding: 0 0.5em;
+		color: var(--btn-color);
+		background-color: var(--btn-bg);
+		border-color: var(--btn-border);
+		// transition: background 0.3s, color 0.3s;
 		line-height: 3.25;
 		user-select: none;
 		font-weight: 700;
 		width: 100%;
-		margin-top: 0.5em;
-		margin-bottom: 0.5em;
+		margin: 0.5em 0.1em;
 	}
 
-	.main:hover {
-		background-color: var(--primary);
-		color: white;
+	.main:not(:disabled):hover {
+		background-color: var(--btn-bg-hover);
+		color: var(--btn-color-hover);
+		border-color: var(--btn-border-hover);
 	}
 
 	.badge {
+		color: var(--btn-color);
+		background-color: var(--btn-bg);
 		border-radius: 2em !important;
-		font-size: 0.8em;
+		font-size: 0.8rem;
 		padding: 0.5em 0 0.5em 1.2em;
 		font-weight: 300;
-		background-color: transparent;
-		color: white;
+		// background-color: transparent;
+		// color: white;
 		transition: padding 0.2s ease-out;
-		margin: 0.5em 0.2em 0.5em 0.5em;
+		margin: 0.5em 0.5em 0.5em 0em;
 	}
 
-	.badge:hover {
-		color: white;
-		border-color: var(--primary);
-		background-color: rgba(243, 101, 102, 0.2);
+	.badge:not(:disabled):hover {
+		background-color: var(--btn-bg-hover);
+		color: var(--btn-color-hover);
 		padding-right: 1.3em;
+		border-color: transparent;
 	}
 
 	.icon-animated {
@@ -166,12 +202,16 @@
 	}
 
 	.outline {
-		border: 1px solid rgba(255, 255, 255, 0.4);
+		border-color: transparent;
+		color: var(--btn-color-hover);
 		background-color: transparent;
 	}
-	.outline:hover {
-		border: 1px solid var(--primary);
+	.outline:not(:disabled):hover {
+		// border-color: var(--btn-border-hover);
+		color: var(--btn-color);
 		background-color: transparent;
+		// border: 1px solid var(--primary);
+		// background-color: var(--btn-bg);
 	}
 
 	@media (min-width: 640px) {
@@ -183,8 +223,9 @@
 
 	@media (min-width: 768px) {
 		.main {
-			width: auto;
-			margin-right: 0.5em;
+			max-width: 300px;
+			// width: auto;
+			// margin-right: 0.5em;
 		}
 	}
 

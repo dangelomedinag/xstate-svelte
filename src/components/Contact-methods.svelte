@@ -11,7 +11,6 @@
 		<a class="link" href="https://www.instagram.com/consweet.cl">
 			<svg class="svg-reset rrss-icon" viewBox="0 0 24 24">
 				<path
-					fill="current"
 					d="M12,1.3c3.5,0,3.9,0,5.3,0.1c3.5,0.2,5.2,1.8,5.4,5.4c0.1,1.4,0.1,1.8,0.1,5.3c0,3.5,0,3.9-0.1,5.3
         c-0.2,3.5-1.8,5.2-5.4,5.4c-1.4,0.1-1.8,0.1-5.3,0.1c-3.5,0-3.9,0-5.3-0.1c-3.6-0.2-5.2-1.9-5.4-5.4c-0.1-1.4-0.1-1.8-0.1-5.3
         c0-3.5,0-3.9,0.1-5.3c0.2-3.5,1.8-5.2,5.4-5.4C8.1,1.3,8.5,1.3,12,1.3z M12,0C8.7,0,8.3,0,7.1,0.1c-4.4,0.2-6.8,2.6-7,7
@@ -104,7 +103,7 @@
 		display: flex;
 		justify-content: flex-start;
 		align-items: center;
-		border-bottom: 1px solid var(--primary-opacity-2);
+		border-bottom: 1px solid var(--rrss-line);
 		cursor: pointer;
 	}
 	.link {
@@ -137,14 +136,14 @@
 		min-height: 60px;
 		margin-right: 1em;
 	}
-	.rrss-icon path {
+	.rrss-icon {
 		transition: all 0.3s ease-in-out;
-		fill: var(--primary-opacity-2);
+		fill: var(--rrss-icon);
 	}
 	.label {
-		font-weight: 300;
+		font-weight: 400;
 		/* font-size: 1em; */
-		font-size: 1em;
+		/* font-size: 1em; */
 	}
 	.rrss-item:hover .label {
 		/* font-weight: 700; */
@@ -180,7 +179,7 @@
 			display: inline-block;
 		}
 		.label {
-			font-size: 1.2em;
+			/* font-size: 1.2em; */
 		}
 	}
 

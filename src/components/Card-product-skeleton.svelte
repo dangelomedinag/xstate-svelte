@@ -17,7 +17,7 @@
 	</div>
 </article>
 
-<style>
+<style lang="scss">
 	/* animations */
 	@keyframes load-overlay {
 		from {
@@ -68,6 +68,11 @@
 		overflow: hidden;
 		border-radius: 10px 10px 10px 10px;
 		transform: scale(0.95);
+
+		@include media(">=tablet") {
+			width: 350px;
+			height: 300px;
+		}
 	}
 
 	.top,
@@ -86,10 +91,10 @@
 		height: 20%;
 	}
 
-	@media (min-width: 768px) {
-		.wrapper {
-			width: 350px;
-			height: 300px;
-		}
-	}
+	// @media (min-width: 768px) {
+	// 	.wrapper {
+	// 		width: 350px;
+	// 		height: 300px;
+	// 	}
+	// }
 </style>

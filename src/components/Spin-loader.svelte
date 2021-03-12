@@ -1,40 +1,49 @@
+<script>
+	export let color = "var(--primary)";
+</script>
+
 <div class="spin-loader">
-	<div />
-	<div />
-	<div />
-	<div />
+	<div style="background-color:{color};" />
+	<div style="background-color:{color};" />
+	<div style="background-color:{color};" />
+	<div style="background-color:{color};" />
 </div>
 
 <style>
 	.spin-loader {
 		display: inline-block;
 		position: relative;
-		width: 80px;
-		height: 80px;
+		width: 50px;
+		/* margin: 0 auto; */
+		max-width: 100%;
+		min-width: 0%;
+		height: 9px;
 	}
 	.spin-loader div {
 		position: absolute;
-		top: 33px;
-		width: 9px;
-		height: 9px;
+		top: 0;
+		width: 7px;
+		height: 7px;
 		border-radius: 50%;
-		background: var(--primary);
 		animation-timing-function: cubic-bezier(0, 1, 1, 0);
 	}
 	.spin-loader div:nth-child(1) {
-		left: 8px;
+		/* background-color: red; */
+		left: 0%;
 		animation: spin-loader1 0.6s infinite;
 	}
 	.spin-loader div:nth-child(2) {
-		left: 8px;
+		/* background-color: blue; */
+		left: 0%;
 		animation: spin-loader2 0.6s infinite;
 	}
 	.spin-loader div:nth-child(3) {
-		left: 32px;
-		animation: spin-loader2 0.6s infinite;
+		/* background-color: red; */
+		right: 45%;
+		animation: spin-loader2-1 0.6s infinite;
 	}
 	.spin-loader div:nth-child(4) {
-		left: 56px;
+		right: 0%;
 		animation: spin-loader3 0.6s infinite;
 	}
 	@keyframes spin-loader1 {
@@ -55,10 +64,18 @@
 	}
 	@keyframes spin-loader2 {
 		0% {
-			transform: translate(0, 0);
+			left: 0%;
 		}
 		100% {
-			transform: translate(24px, 0);
+			left: 45%;
+		}
+	}
+	@keyframes spin-loader2-1 {
+		0% {
+			right: 45%;
+		}
+		100% {
+			right: 0%;
 		}
 	}
 </style>

@@ -1,10 +1,15 @@
 <script>
+	import { afterUpdate } from "svelte";
+
 	import { quintOut } from "svelte/easing";
-	import { scale } from "svelte/transition";
+	import { scale, slide } from "svelte/transition";
 	import CardProductSkeleton from "./Card-product-skeleton.svelte";
 	import CardProduct from "./Card-product.svelte";
+	import SpinLoader from "./Spin-loader.svelte";
 
 	export let products;
+
+	// let productsWithFilter = products.filter(({ salient }) => salient);
 
 	let scroll_container;
 	let rotate = false;
@@ -26,98 +31,62 @@
 		});
 		e.target.blur();
 	}
+
+	// afterUpdate(() => console.log("update scroll wrapper"));
 </script>
 
-<section class="salient">
-	<div class="salient__scrollable" bind:this={scroll_container}>
-		{#each products as item, i (item.id)}
-			<CardProduct product={item} on:clickCard />
-			<div class="salient__spacer" />
-			<button
-				in:scale|local={{
-					delay: 300,
-					duration: 1000,
-					easing: quintOut,
-					opacity: 0,
-					start: 0.8,
-				}}
-				class="salient__btn"
-				on:click={scrolling}
-			>
-				<svg
-					class="salient__icon"
-					class:salient__icon--reverse={rotate}
-					viewBox="0 0 20 20"
-				>
-					<path
-						d="M1.729,9.212h14.656l-4.184-4.184c-0.307-0.306-0.307-0.801,0-1.107c0.305-0.306,0.801-0.306,1.106,0
-            l5.481,5.482c0.018,0.014,0.037,0.019,0.053,0.034c0.181,0.181,0.242,0.425,0.209,0.66c-0.004,0.038-0.012,0.071-0.021,0.109
-            c-0.028,0.098-0.075,0.188-0.143,0.271c-0.021,0.026-0.021,0.061-0.045,0.085c-0.015,0.016-0.034,0.02-0.051,0.033l-5.483,5.483
-            c-0.306,0.307-0.802,0.307-1.106,0c-0.307-0.305-0.307-0.801,0-1.105l4.184-4.185H1.729c-0.436,0-0.788-0.353-0.788-0.788
-            S1.293,9.212,1.729,9.212z"
-					/>
-				</svg>
-			</button>
-		{:else}
-			<CardProductSkeleton />
-		{/each}
-	</div>
+<!-- {#key products} -->
+<section class="salient" in:slide>
+	<!-- <div class="salient__scrollable" bind:this={scroll_container}> -->
+	{#each products.filter(({ salient }) => salient) as item, i (item.id)}
+		<CardProduct grid inline product={item} on:clickCard />
+
+		<!-- <div class="salient__spacer" /> -->
+	{:else}
+		<!-- <CardProductSkeleton /> -->
+		<SpinLoader />
+	{/each}
 </section>
 
+<!-- {/key} -->
 <style>
 	.salient {
-		position: relative;
-		margin: 1em 0;
-		height: 353px;
+		--bg-card: transparent;
+		/* overflow: hidden; */
 		width: 100%;
-		overflow: hidden;
-	}
-	.salient::after {
-		content: "";
-		position: absolute;
-		top: 0;
-		right: 0;
-		height: 95%;
-		width: 80%;
-		opacity: 0;
-		background: linear-gradient(
-			90deg,
-			var(--secondary-trans, #2a221d00) 30%,
-			var(--secondary, #2a221d) 100%
-		);
-		pointer-events: none;
-		transition: opacity 1s;
-	}
-	.salient:hover::after {
-		opacity: 1;
-	}
-	.salient__scrollable {
+		/* height: 200px; */
+		/* height: 300px; */
+		margin-bottom: 1em;
 		overflow-x: scroll;
+		overflow-y: hidden;
+		position: relative;
+		/* height: 200px; */
 		white-space: nowrap;
 		min-width: 100%;
-		/* padding: 1em 5em 1em 0; */
+		padding-right: 4em;
 		padding-top: 1em;
-		padding-right: 3em;
 		padding-bottom: 1em;
-		padding-left: 0px;
-		scroll-behavior: smooth;
-		scrollbar-color: var(--primary, #f36262) transparent !important;
-		scrollbar-width: thin;
+		/* scroll-behavior: smooth; */
+		scrollbar-color: var(--primary-opacity-1, #f36262) transparent !important;
+		scrollbar-width: none;
+	}
+	.salient__scrollable {
+		/* max-height: 250px; */
 	}
 
-	.salient__scrollable::-webkit-scrollbar {
+	.salient::-webkit-scrollbar {
 		height: 5px;
 		border-radius: 10px;
 	}
-	.salient__scrollable::-webkit-scrollbar-track {
+	.salient::-webkit-scrollbar-track {
 		margin: 0 14px;
 	}
-	.salient__scrollable::-webkit-scrollbar-thumb {
+	.salient::-webkit-scrollbar-thumb {
 		border-radius: 10px;
-		background: var(--primary-opacity-2, #f362621a);
+		background: hsla(0, 86%, 67%, 0.015);
 	}
-	.salient__scrollable::-webkit-scrollbar-thumb:hover {
-		background: var(--primary, #e98585);
+	.salient::-webkit-scrollbar-thumb:hover {
+		background: var(--primary-opacity-1, rgba(233, 134, 134, 0.1));
 	}
 	.salient__spacer {
 		min-width: 15px;
@@ -128,7 +97,6 @@
 	}
 
 	.salient__btn {
-		/* transform: translateX(20%); */
 		opacity: 0;
 		outline: none;
 		position: absolute;

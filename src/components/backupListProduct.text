@@ -1,27 +1,165 @@
-<div class="wrapper__sorttool">
-	<ProductsSortTool {categories} bind:filter bind:sort />
-</div>
+<script>
+	import { flip } from "svelte/animate";
+	import { quintInOut } from "svelte/easing";
+	import CardProduct from "./Card-product.svelte";
+	import CardActions from "./Card-actions.svelte";
+	export let sortCategoriesPrice, products;
+
+	let flipAnimate = {
+		delay: 0,
+		duration: 600,
+		easing: quintInOut,
+		opacity: 0,
+	};
+
+	// test share
+	const shareData = {
+		title: "Consweet",
+		text: "Descubre estas delicias que esperan por ti!",
+		url: "https://consweet.netlify.app/",
+	};
+
+	// Must be triggered some kind of "user activation"
+	const shared = async () => {
+		try {
+			await navigator.share(shareData);
+			// resultPara.textContent = 'MDN shared successfully'
+		} catch (err) {
+			// resultPara.textContent = 'Error: ' + err
+			console.error(`navigator.share() no disponible. \n ${err}`);
+			try {
+				await navigator.clipboard.writeText("https://consweet.netlify.app/");
+				console.log("copy to clipboard");
+			} catch (e) {
+				console.log(e);
+			}
+		}
+	};
+</script>
+
+<!-- <div class="wrapper__sorttool">
+
+</div> -->
+
 {#each sortCategoriesPrice as { id, nombre: name }, i (id)}
-	<div class="grid-products">
-		<h3 class="categorie__title" id={"categorie-list" + i}>
-			{name}
-		</h3>
-		{#each products.filter((it) => it.categoria_id === id) as item (item.id)}
-			<div
-				class="wrapper__card-list"
-				animate:flip={{
-					delay: 0,
-					duration: 600,
-					easing: quintInOut,
-					opacity: 0,
-				}}
-			>
-				<CardProduct
-					product={item}
-					on:clickCard={showProduct}
-					delay={0}
-				/>
-			</div>
-		{/each}
-	</div>
+	<details open>
+		<summary>
+			{name} ({products.filter((p) => p.categoria_id === id).length})
+			<!-- <h6 class="categorie__title" id={"categorie-list" + i}>
+			</h6> -->
+		</summary>
+		<div class="grid-products">
+			{#each products
+				.filter((it) => it.categoria_id === id)
+				.sort((a, b) => (a.salient ? -1 : 1)) as item (item.id)}
+				<div class="wrapper__card-list" animate:flip={flipAnimate}>
+					<CardProduct product={item} on:clickCard delay={0} />
+					<CardActions
+						{item}
+						on:like={(e) => console.log("like", e.detail.id)}
+						on:comment={(e) => console.log("comment", e.detail.id)}
+						on:share={shared}
+					/>
+				</div>
+			{/each}
+		</div>
+	</details>
 {/each}
+
+<!-- <div class="wrapper__sorttool">
+
+</div> -->
+<style lang="scss">
+	details {
+		width: 100%;
+	}
+
+	summary {
+		outline: none;
+		width: 100%;
+		padding: 0.5rem 0;
+		// position: sticky;
+		// top: 33px;
+		z-index: 99999999;
+		background-color: var(--secondary-opacity-9);
+		border-bottom: 1px solid var(--neutral-opacity-1);
+		text-align: center;
+
+		&::-webkit-details-marker {
+			display: none;
+		}
+
+		@include media(">=tablet") {
+			text-align: left;
+			padding: 0.5rem 0;
+			position: sticky;
+			top: 32px;
+		}
+	}
+
+	.categorie__title {
+		width: 100%;
+		margin: 0 0 0em 0;
+		padding: 0.5em;
+		font-size: 1rem;
+		text-align: center;
+		background-color: var(--secondary-opacity-9);
+		// width: 100%;
+		border-bottom: 1px solid var(--neutral-opacity-1);
+
+		@include media(">=tablet") {
+			position: sticky;
+			top: 54px;
+			z-index: 99999999;
+		}
+	}
+
+	.grid-products {
+		flex-basis: 100%;
+		// max-width: 350px;
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
+		flex-wrap: wrap;
+
+		@include media(">=tablet") {
+			// flex-basis: 100%;
+			justify-content: flex-start;
+		}
+	}
+
+	.wrapper__card-list {
+		flex-basis: 100%;
+		min-width: 0;
+		max-width: 350px;
+		padding: 1.5em 1em;
+		flex-grow: 0;
+		flex-shrink: 1;
+
+		@include media(">=tablet") {
+			padding: 3em 1em;
+			flex-basis: 50%;
+		}
+		@include media(">=desktop") {
+			flex-basis: calc(100% / 3);
+		}
+	}
+
+	// @media (min-width: 640px) {
+	// }
+
+	// @media (min-width: 768px) {
+	// 	.categorie__title {
+	// 		text-align: left;
+	// 	}
+	// }
+
+	// @media (min-width: 1024px) {
+	/* .grid-products {
+			justify-content: left;
+		} */
+	// }
+
+	// @media (min-width: 1280px) {
+	// }
+</style>

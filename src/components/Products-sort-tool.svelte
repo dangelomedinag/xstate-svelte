@@ -5,8 +5,21 @@
 </script>
 
 <div class="select">
-	<slot />
+	<!-- <slot /> -->
 	<select class="select__item select__filter" bind:value={filter}>
+		<!-- <svg
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke="currentColor"
+		>
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="2"
+				d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
+			/>
+		</svg> -->
 		<option class="select__option" value="todos">todos</option>
 		{#each categories as { nombre: name, id }}
 			<option class="select__option" value={id}>
@@ -27,6 +40,7 @@
 		padding: 1em;
 		display: flex;
 		justify-content: center;
+		position: relative;
 	}
 
 	.select__item {
@@ -47,5 +61,12 @@
 		outline: 1px dashed var(--primary-opacity-3);
 		outline-offset: -3px;
 		box-shadow: 0px 0px 30px 3px rgba(0, 0, 0, 0.1);
+	}
+	svg {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 100%;
+		height: 100%;
 	}
 </style>

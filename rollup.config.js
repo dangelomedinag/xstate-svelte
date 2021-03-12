@@ -5,18 +5,7 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import replace from "@rollup/plugin-replace";
-// import {
-  // pug,
-  // coffeescript,
-  // typescript,
-  // less,
-  // scss,
-  // sass,
-  // stylus,
-  // postcss,
-  // globalStyle,
-  // babel,
-// } from 'svelte-preprocess';
+import autoPreprocess from 'svelte-preprocess';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -55,9 +44,15 @@ export default {
 				// enable run-time checks when not in production
 				dev: !production
 			},
-			// preprocess: [
-				// scss({}),
-			// ]
+			preprocess: autoPreprocess({
+				scss: true,
+				postcss: {
+					plugins: [require("autoprefixer")()]
+				},
+				scss: {
+					prependData: '@import "src/App.scss";'
+				}
+			})
 		}),
 		replace({ 
 			'process.env.NODE_ENV': process.env.NODE_ENV

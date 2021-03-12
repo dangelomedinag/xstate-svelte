@@ -1,3 +1,4 @@
+import { store } from "./stores/products-store";
 import { interpret } from "xstate";
 
 export function useMachine(machine, config, transiton,options) {
